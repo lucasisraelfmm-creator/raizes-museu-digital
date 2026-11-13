@@ -1,0 +1,1277 @@
+<title>Raízes Museu Digital</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Raízes — Museu Digital da Cultura Afro-Brasileira: Capoeira, Ijexá e Maculelê.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: museu editorial — salas (seções) alternando papel claro e sala escura; trilho dourado marca o percurso. */
+:root{
+  --preto:#171512; --terra:#70452D; --ouro:#C29A53; --bege:#F0E7D8; --areia:#D9C7A8; --verde:#263D31; --branco:#FAF8F3;
+  --bg:#F0E7D8; --bg-alt:#FAF8F3; --ink:#171512; --muted:#5b4e41; --line:#d3c2a4; --ouro-ink:#7a5a20; --card:#FAF8F3;
+  --dk-bg:#171512; --dk-alt:#201d19; --dk-ink:#F0E7D8; --dk-muted:#c4b59c; --dk-line:#3a332a;
+  --ok:#2f6b47; --err:#9b3324;
+  --f-display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --f-text:"Manrope", "Segoe UI", system-ui, sans-serif;
+  --gut:max(16px, env(safe-area-inset-left, 0px));
+  --gut-r:max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1c1915; --bg-alt:#24201b; --ink:#F0E7D8; --muted:#c4b59c; --line:#3d352b; --ouro-ink:#d4ae68; --card:#24201b;
+  --dk-bg:#100e0c; --dk-alt:#1a1714; --ok:#6fbf8c; --err:#e58a76; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#1c1915; --bg-alt:#24201b; --ink:#F0E7D8; --muted:#c4b59c; --line:#3d352b; --ouro-ink:#d4ae68; --card:#24201b;
+  --dk-bg:#100e0c; --dk-alt:#1a1714; --ok:#6fbf8c; --err:#e58a76; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-text);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--preto)}
+a{color:inherit}
+img,svg{max-width:100%}
+:focus-visible{outline:2px solid var(--ouro);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--ouro);color:var(--preto);padding:8px 14px;font-weight:700}
+.skip:focus{left:16px}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:600;line-height:1.08;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(2.4rem,6.4vw,5.4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.9rem,3.8vw,3.1rem)}
+h3{font-size:clamp(1.3rem,2vw,1.6rem)}
+h4{font-size:1.15rem}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gut);padding-right:var(--gut-r)}
+.narrow{max-width:760px}
+.eyebrow{font-family:var(--f-text);font-size:.74rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ouro-ink);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:34px;height:1px;background:currentColor}
+.dark .eyebrow,.hero .eyebrow{color:var(--ouro)}
+.lead{font-size:clamp(1.08rem,1.6vw,1.3rem);line-height:1.6;color:var(--muted)}
+.gold{color:var(--ouro-ink);font-weight:600}
+.dark .gold,.hero .gold{color:var(--ouro)}
+.prose{display:grid;gap:1.1em;max-width:68ch}
+.prose p{color:var(--ink)}
+.dark .prose p{color:var(--dk-ink)}
+.muted{color:var(--muted)}
+.dark .muted{color:var(--dk-muted)}
+
+/* header */
+.top{position:fixed;inset:0 0 auto;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:background .35s,border-color .35s;border-bottom:1px solid transparent;color:var(--dk-ink)}
+.top.solid{background:rgba(23,21,18,.96);border-color:#3a332a;backdrop-filter:blur(8px)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand b{font-family:var(--f-display);font-size:1.45rem;font-weight:800;letter-spacing:.08em}
+.brand small{display:block;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro);line-height:1.2}
+.nav{display:flex;gap:2px;align-items:center}
+.nav a{text-decoration:none;font-size:.84rem;font-weight:600;padding:8px 10px;position:relative;color:#e8dcc6}
+.nav a::after{content:"";position:absolute;left:10px;right:10px;bottom:2px;height:2px;background:var(--ouro);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.nav a:hover::after,.nav a[aria-current="page"]::after{transform:scaleX(1)}
+.nav a[aria-current="page"]{color:var(--ouro)}
+.menu-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid #6b5a41;color:var(--dk-ink);padding:8px 14px;font:600 .82rem var(--f-text);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.menu-btn:hover{border-color:var(--ouro);color:var(--ouro)}
+@media (max-width:1080px){.nav{display:none}}
+.progress{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:2px;background:var(--ouro);width:0;z-index:55}
+
+/* drawer */
+.drawer{position:fixed;inset:0;z-index:70;display:grid;grid-template-columns:1fr min(420px,92vw);visibility:hidden}
+.drawer.open{visibility:visible}
+.drawer .scrim{background:rgba(10,9,8,.6);opacity:0;transition:opacity .3s}
+.drawer.open .scrim{opacity:1}
+.drawer aside{background:var(--preto);color:var(--dk-ink);padding:calc(24px + env(safe-area-inset-top,0px)) max(28px,env(safe-area-inset-right,0px)) 28px 28px;overflow:auto;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.7,.2,1);border-left:1px solid #3a332a}
+.drawer.open aside{transform:none}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.drawer ol{list-style:none;margin:0;padding:0;counter-reset:s}
+.drawer li a{display:flex;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid #2e2922;text-decoration:none;font-family:var(--f-display);font-size:1.25rem}
+.drawer li a span{font:600 .72rem var(--f-text);color:var(--ouro);letter-spacing:.1em;width:22px}
+.drawer li a:hover,.drawer li a[aria-current="page"]{color:var(--ouro)}
+.icon-btn{background:none;border:1px solid #5a4b37;color:inherit;width:40px;height:40px;display:grid;place-items:center;cursor:pointer}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;font:700 .8rem var(--f-text);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:1px solid var(--ouro);transition:background .25s,color .25s,transform .25s}
+.btn-gold{background:var(--ouro);color:var(--preto)}
+.btn-gold:hover{background:#d6b06b}
+.btn-ghost{background:transparent;color:var(--dk-ink);border-color:rgba(240,231,216,.5)}
+.btn-ghost:hover{border-color:var(--ouro);color:var(--ouro)}
+.btn-line{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn-line:hover{background:var(--ink);color:var(--bg)}
+.dark .btn-line{color:var(--dk-ink);border-color:var(--dk-ink)}
+.dark .btn-line:hover{background:var(--dk-ink);color:var(--preto)}
+.btn svg{width:16px;height:16px}
+.link-arrow{font-weight:700;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-flex;gap:8px;align-items:center;color:var(--ouro-ink);background:none;border:0;padding:0;cursor:pointer;font-family:var(--f-text)}
+.dark .link-arrow{color:var(--ouro)}
+.link-arrow:hover{gap:12px}
+
+/* hero */
+.hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;color:var(--dk-ink);background:var(--preto);overflow:hidden;isolation:isolate}
+.hero.short{min-height:68vh}
+.hero-art{position:absolute;inset:0;z-index:-2}
+.hero-art svg{width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(23,21,18,.55) 0%,rgba(23,21,18,.25) 40%,rgba(23,21,18,.92) 100%)}
+.hero .wrap{width:100%;padding-block:140px 72px}
+.hero h1{max-width:15ch;margin-top:18px}
+.hero .sub{max-width:58ch;margin-top:22px;font-size:clamp(1.05rem,1.6vw,1.28rem);color:#e2d5bd}
+.hero .actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.scroll-cue{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);width:24px;height:40px;border:1px solid rgba(240,231,216,.5);border-radius:14px}
+.scroll-cue::after{content:"";position:absolute;left:50%;top:8px;width:3px;height:8px;background:var(--ouro);border-radius:2px;transform:translateX(-50%);animation:cue 1.8s infinite}
+@keyframes cue{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,14px)}}
+.hero-meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:48px;padding-top:20px;border-top:1px solid rgba(194,154,83,.35);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#cdbd9f}
+.hero-meta b{color:var(--ouro);font-weight:700;margin-right:6px}
+
+/* sections */
+.sec{padding-block:clamp(64px,9vw,120px);background:var(--bg)}
+.sec.alt{background:var(--bg-alt)}
+.dark{background:var(--dk-bg);color:var(--dk-ink)}
+.sec.dark{background:var(--dk-bg)}
+.sec.green{background:var(--verde);color:var(--dk-ink)}
+.sec.green .eyebrow{color:var(--ouro)}
+.sec-head{display:grid;gap:16px;margin-bottom:48px;max-width:820px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,80px);align-items:center}
+.split > *{min-width:0}
+.split.top-align{align-items:start}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.rule{height:1px;background:linear-gradient(90deg,var(--ouro),transparent);border:0;margin:0;transform-origin:left}
+.rv .rule,.rule.rv{transform:scaleX(0);transition:transform 1.2s ease}
+.rule.rv.in{transform:scaleX(1)}
+
+/* pattern bands */
+.band{height:28px;background-repeat:repeat-x;background-size:56px 28px;opacity:.9}
+.band.p1{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='28'%3E%3Cpath d='M0 28 L14 6 L28 28 L42 6 L56 28' fill='none' stroke='%23C29A53' stroke-width='1.4'/%3E%3Ccircle cx='14' cy='22' r='2' fill='%23C29A53'/%3E%3Ccircle cx='42' cy='22' r='2' fill='%23C29A53'/%3E%3C/svg%3E")}
+.band.p2{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='28'%3E%3Cpath d='M0 14 L14 2 L28 14 L14 26Z M28 14 L42 2 L56 14 L42 26Z' fill='none' stroke='%23C29A53' stroke-width='1.2'/%3E%3Cpath d='M10 14h8M38 14h8' stroke='%2370452D' stroke-width='2'/%3E%3C/svg%3E")}
+.on-dark-band{background-color:var(--dk-bg)}
+
+/* reveal */
+.rv{transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .rv:not(.in){opacity:.55;transform:translateY(18px)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.js .rv:not(.in){opacity:1;transform:none}}
+
+/* page transition */
+main{transition:opacity .22s ease}
+main.leaving{opacity:0}
+
+/* subnav */
+.subnav{position:sticky;top:calc(72px + env(safe-area-inset-top,0px));z-index:40;background:var(--bg-alt);border-bottom:1px solid var(--line)}
+.subnav .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.subnav .wrap::-webkit-scrollbar{display:none}
+.subnav a{white-space:nowrap;text-decoration:none;font-size:.8rem;font-weight:600;padding:14px 12px;color:var(--muted);border-bottom:2px solid transparent}
+.subnav a:hover,.subnav a.on{color:var(--ink);border-color:var(--ouro)}
+[id]{scroll-margin-top:140px}
+
+/* manifestation cards */
+.mani-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media (max-width:960px){.mani-grid{grid-template-columns:1fr}}
+.mani{position:relative;display:flex;flex-direction:column;background:var(--preto);color:var(--dk-ink);text-decoration:none;overflow:hidden;min-height:540px;transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s}
+.mani:hover{transform:translateY(-6px);box-shadow:0 30px 60px -30px rgba(23,21,18,.7)}
+.mani .art{position:absolute;inset:0;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.mani .art svg{width:100%;height:100%;display:block}
+.mani:hover .art{transform:scale(1.06)}
+.mani::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 25%,rgba(23,21,18,.94) 78%)}
+.mani .body{position:relative;z-index:1;margin-top:auto;padding:28px;display:grid;gap:14px}
+.mani .tag{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+.mani h3{font-size:2.3rem;font-weight:800}
+.mani p{color:#ddd0b8;font-size:.98rem}
+.mani .num{position:absolute;top:22px;right:24px;z-index:1;font-family:var(--f-display);font-size:.9rem;color:var(--ouro);letter-spacing:.1em}
+
+/* generic cards */
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:980px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);padding:26px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.dark .card{background:var(--dk-alt);border-color:var(--dk-line)}
+.card h3,.card h4{color:inherit}
+.card .k{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro-ink)}
+.dark .card .k{color:var(--ouro)}
+.card p{font-size:.96rem;color:var(--muted)}
+.dark .card p{color:var(--dk-muted)}
+.plain{border:0;border-top:1px solid var(--ouro);background:transparent;padding:22px 0 0}
+.dark .plain{background:transparent;border-top-color:var(--ouro)}
+
+/* instruments */
+.instr{cursor:pointer;text-align:left;font:inherit;color:inherit;transition:transform .35s,box-shadow .35s,border-color .35s}
+.instr:hover{transform:translateY(-4px);box-shadow:0 20px 40px -26px rgba(23,21,18,.55);border-color:var(--ouro)}
+.instr .pic{aspect-ratio:1/1;background:var(--bg);display:grid;place-items:center;max-width:100%;border:1px solid var(--line)}
+.dark .instr .pic{background:#14120f;border-color:var(--dk-line)}
+.instr .pic svg{width:72%;height:72%}
+.instr .meta{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border:1px solid var(--line);color:var(--muted)}
+.dark .chip{border-color:var(--dk-line);color:var(--dk-muted)}
+.chip.on{background:var(--ouro);border-color:var(--ouro);color:var(--preto)}
+
+/* callout / quote */
+.callout{border-left:3px solid var(--ouro);padding:22px 26px;background:var(--bg-alt);font-family:var(--f-display);font-size:clamp(1.2rem,2vw,1.55rem);line-height:1.4}
+.dark .callout{background:var(--dk-alt)}
+.note{display:flex;gap:14px;padding:18px 20px;border:1px dashed var(--ouro);font-size:.92rem;color:var(--muted);max-width:820px}
+.dark .note{color:var(--dk-muted)}
+.note b{color:var(--ink)}
+.dark .note b{color:var(--dk-ink)}
+.badge{display:inline-block;font-size:.66rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;vertical-align:middle}
+.b-doc{background:#263D31;color:#F0E7D8}
+.b-int{background:#70452D;color:#F0E7D8}
+.b-oral{background:#C29A53;color:#171512}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);background:var(--card)}
+.dark .tbl-wrap{border-color:var(--dk-line);background:var(--dk-alt)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.95rem}
+th,td{text-align:left;padding:16px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+.dark th,.dark td{border-color:var(--dk-line)}
+thead th{font-family:var(--f-display);font-size:1.1rem;font-weight:600;background:var(--preto);color:var(--bege);border-bottom:2px solid var(--ouro)}
+tbody th{font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ouro-ink);width:22%}
+.dark tbody th{color:var(--ouro)}
+tbody tr:hover td{background:rgba(194,154,83,.08)}
+
+/* side timeline (capoeira) */
+.rail{list-style:none;margin:0;padding:0 0 0 26px;border-left:1px solid var(--ouro);display:grid;gap:26px}
+.rail li{position:relative}
+.rail li::before{content:"";position:absolute;left:-32px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--ouro)}
+.rail .y{font-family:var(--f-display);font-weight:800;font-size:1.2rem;color:var(--ouro-ink)}
+.dark .rail .y{color:var(--ouro)}
+.rail p{font-size:.94rem;color:var(--muted)}
+.dark .rail p{color:var(--dk-muted)}
+.sticky-col{position:sticky;top:150px}
+@media (max-width:860px){.sticky-col{position:static}}
+
+/* movements */
+.mov svg{width:100%;height:auto;aspect-ratio:4/3;background:var(--bg);border:1px solid var(--line);display:block}
+.dark .mov svg{background:#14120f;border-color:var(--dk-line)}
+
+/* big timeline */
+.tl{position:relative;display:grid;gap:0}
+.tl::before{content:"";position:absolute;left:calc(50% - 1px);top:0;bottom:0;width:2px;background:var(--line)}
+.tl .fill{position:absolute;left:calc(50% - 1px);top:0;width:2px;background:var(--ouro);height:0}
+.tl-item{display:grid;grid-template-columns:1fr 60px 1fr;align-items:start;padding-block:28px}
+.tl-item .dot{justify-self:center;width:18px;height:18px;border-radius:50%;background:var(--bg);border:2px solid var(--ouro);margin-top:12px;position:relative;z-index:1;transition:background .4s}
+.tl-item.in .dot{background:var(--ouro)}
+.tl-item .tl-card{grid-column:1;text-align:right}
+.tl-item:nth-child(odd) .tl-card{grid-column:3;text-align:left}
+.tl-item:nth-child(odd) .dot{grid-column:2;grid-row:1}
+.tl-item:nth-child(even) .dot{grid-column:2;grid-row:1}
+.tl-card{display:grid;gap:10px;grid-row:1}
+.tl-card .when{font-family:var(--f-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:var(--ouro-ink);line-height:1}
+.tl-card .src{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.tl-card .ill{width:120px;height:80px;display:inline-block}
+.tl-item:nth-child(even) .tl-card .ill{justify-self:end}
+.tl-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tl-item:nth-child(even) .tl-tags{justify-content:flex-end}
+@media (max-width:760px){
+  .tl::before,.tl .fill{left:9px}
+  .tl-item{grid-template-columns:20px 1fr;gap:16px}
+  .tl-item .dot,.tl-item:nth-child(odd) .dot,.tl-item:nth-child(even) .dot{grid-column:1;margin-top:8px}
+  .tl-item .tl-card,.tl-item:nth-child(odd) .tl-card{grid-column:2;text-align:left}
+  .tl-item:nth-child(even) .tl-card .ill{justify-self:start}
+  .tl-item:nth-child(even) .tl-tags{justify-content:flex-start}
+}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.filters button{font:700 .72rem var(--f-text);letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;background:transparent;border:1px solid var(--line);color:var(--muted);cursor:pointer}
+.dark .filters button{border-color:var(--dk-line);color:var(--dk-muted)}
+.filters button[aria-pressed="true"]{background:var(--ouro);border-color:var(--ouro);color:var(--preto)}
+.filters button:hover{border-color:var(--ouro)}
+
+/* gallery */
+.gal{columns:3 280px;column-gap:18px}
+.gal figure{break-inside:avoid;margin:0 0 18px;background:var(--dk-alt);border:1px solid var(--dk-line)}
+.gal button{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;color:inherit;overflow:hidden}
+.gal button svg{display:block;width:100%;height:auto;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.gal button:hover svg{transform:scale(1.04)}
+.gal figcaption{padding:14px 16px 16px;display:grid;gap:4px}
+.gal figcaption b{font-family:var(--f-display);font-size:1.05rem;font-weight:600;color:var(--dk-ink)}
+.gal figcaption span{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ouro)}
+
+/* dialogs */
+dialog{border:0;padding:0;max-width:min(980px,94vw);width:100%;max-height:92vh;background:var(--bg-alt);color:var(--ink)}
+dialog::backdrop{background:rgba(10,9,8,.78)}
+.dlg{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);max-height:92vh}
+.dlg .pic{background:var(--preto);display:grid;place-items:center;padding:30px}
+.dlg .pic svg{width:100%;max-width:340px;height:auto}
+.dlg .txt{padding:34px;overflow:auto;display:grid;gap:16px;align-content:start}
+.dlg dl{display:grid;gap:14px;margin:0}
+.dlg dt{font-size:.7rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ouro-ink)}
+.dlg dd{margin:2px 0 0;font-size:.95rem}
+.dlg-close{position:absolute;top:12px;right:12px;z-index:2;background:var(--preto);color:var(--bege);border:1px solid var(--ouro)}
+@media (max-width:760px){.dlg{grid-template-columns:1fr;overflow:auto}.dlg .pic{padding:20px}.dlg .pic svg{max-width:200px}.dlg .txt{overflow:visible}}
+.lb{max-width:min(1100px,96vw);background:var(--preto);color:var(--bege)}
+.lb-inner{display:grid;gap:0}
+.lb-stage{position:relative;display:grid;place-items:center;background:#0d0c0a}
+.lb-stage svg{width:100%;height:auto;max-height:68vh;display:block}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(23,21,18,.8);color:var(--bege);border:1px solid var(--ouro);width:46px;height:46px;cursor:pointer;display:grid;place-items:center}
+.lb-prev{left:12px}.lb-next{right:12px}
+.lb-cap{padding:20px 24px;display:grid;gap:6px}
+.lb-cap .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ouro)}
+.lb-cap small{color:#b8a98f}
+
+/* faq / curiosities */
+.cur{background:var(--card);border:1px solid var(--line);transition:border-color .3s}
+.cur[open]{border-color:var(--ouro)}
+.cur summary{list-style:none;cursor:pointer;padding:24px;display:flex;gap:18px;align-items:flex-start;justify-content:space-between}
+.cur summary::-webkit-details-marker{display:none}
+.cur summary h3{font-size:1.2rem}
+.cur summary .plus{flex:none;width:30px;height:30px;border:1px solid var(--ouro);display:grid;place-items:center;transition:transform .3s;color:var(--ouro-ink)}
+.cur[open] summary .plus{transform:rotate(45deg)}
+.cur .ans{padding:0 24px 24px;color:var(--muted);font-size:.96rem;display:grid;gap:10px}
+.cur .q-k{font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro-ink);display:block;margin-bottom:6px}
+
+/* quiz */
+.quiz{background:var(--card);border:1px solid var(--line);padding:clamp(22px,4vw,44px);max-width:860px;margin:0 auto}
+.dark .quiz{background:var(--dk-alt);border-color:var(--dk-line)}
+.qbar{height:4px;background:var(--line);margin:14px 0 28px}
+.dark .qbar{background:var(--dk-line)}
+.qbar i{display:block;height:100%;background:var(--ouro);width:0;transition:width .4s}
+.qtop{display:flex;justify-content:space-between;gap:12px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ouro)}
+.qopts{display:grid;gap:10px;margin-top:24px}
+.qopt{display:flex;gap:14px;align-items:center;text-align:left;padding:16px 18px;border:1px solid var(--dk-line);background:transparent;color:var(--dk-ink);font:500 1rem var(--f-text);cursor:pointer}
+.qopt:hover:not(:disabled){border-color:var(--ouro)}
+.qopt .l{flex:none;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--ouro);font-weight:800;font-size:.8rem;color:var(--ouro)}
+.qopt.right{border-color:var(--ok);background:rgba(47,107,71,.25)}
+.qopt.wrong{border-color:var(--err);background:rgba(155,51,36,.25)}
+.qopt:disabled{cursor:default}
+.qexp{margin-top:20px;padding:16px 18px;border-left:3px solid var(--ouro);background:rgba(194,154,83,.08);color:var(--dk-muted);font-size:.95rem}
+.qexp b{color:var(--dk-ink)}
+.qfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:24px;flex-wrap:wrap}
+.score-big{font-family:var(--f-display);font-size:clamp(3rem,8vw,5.5rem);font-weight:800;color:var(--ouro);line-height:1}
+
+/* glossary */
+.search{display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--ink);padding:10px 0;max-width:620px;margin-bottom:32px}
+.search input{flex:1;border:0;background:transparent;font:500 1.15rem var(--f-text);color:var(--ink);outline:none;min-width:0}
+.search input::placeholder{color:var(--muted)}
+.gl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px}
+@media (max-width:760px){.gl{grid-template-columns:1fr}}
+.gl div{padding:18px 0;border-bottom:1px solid var(--line)}
+.gl dt{font-family:var(--f-display);font-size:1.2rem;font-weight:600}
+.gl dd{margin:6px 0 0;color:var(--muted);font-size:.95rem}
+.gl mark{background:rgba(194,154,83,.35);color:inherit}
+
+/* explore */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--dk-line);overflow-x:auto}
+.tabs button{flex:1;min-width:140px;padding:18px 14px;background:transparent;border:0;border-bottom:3px solid transparent;color:var(--dk-muted);font:600 1.15rem var(--f-display);cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ouro);border-bottom-color:var(--ouro)}
+.ex-panel{padding-top:36px}
+.ex-facets{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}
+@media (max-width:980px){.ex-facets{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.ex-facets{grid-template-columns:1fr}}
+
+/* roda diagram */
+.diagram{background:var(--card);border:1px solid var(--line);padding:16px;overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:420px;height:auto}
+.diagram text{font-family:var(--f-text)}
+
+/* stat */
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--ouro);border-bottom:1px solid var(--dk-line)}
+.facts > div{padding:26px 22px;border-right:1px solid var(--dk-line)}
+.facts > div:last-child{border-right:0}
+.facts b{display:block;font-family:var(--f-display);font-size:clamp(2rem,4vw,3rem);color:var(--ouro);line-height:1;font-weight:800}
+.facts span{font-size:.9rem;color:var(--dk-muted)}
+@media (max-width:700px){.facts{grid-template-columns:1fr}.facts > div{border-right:0;border-bottom:1px solid var(--dk-line)}}
+
+/* refs */
+.refs{display:grid;gap:0;counter-reset:r}
+.refs li{list-style:none;padding:18px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:44px 1fr;gap:12px}
+.refs li::before{counter-increment:r;content:counter(r,decimal-leading-zero);font-family:var(--f-display);color:var(--ouro-ink);font-weight:800}
+.refs a{color:var(--ouro-ink);word-break:break-word}
+.refs ol{padding:0;margin:0}
+
+/* footer */
+.foot{background:var(--preto);color:var(--dk-ink);padding-block:80px calc(36px + env(safe-area-inset-bottom,0px))}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+@media (max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.foot-grid{grid-template-columns:1fr}}
+.foot h4{font-family:var(--f-text);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro);margin-bottom:14px}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.foot a{text-decoration:none;color:#d7c9b0;font-size:.94rem}
+.foot a:hover{color:var(--ouro)}
+.foot p{color:#b8a98f;font-size:.92rem}
+.foot-quote{font-family:var(--f-display);font-size:clamp(1.4rem,3vw,2.2rem);margin-top:56px;padding-top:36px;border-top:1px solid #3a332a;max-width:28ch}
+.foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:36px;font-size:.78rem;color:#968871}
+
+.to-top{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:45;width:46px;height:46px;background:var(--preto);border:1px solid var(--ouro);color:var(--ouro);display:grid;place-items:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}
+.to-top.show{opacity:1;pointer-events:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.list-dash{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.list-dash li{padding-left:22px;position:relative}
+.list-dash li::before{content:"";position:absolute;left:0;top:.75em;width:12px;height:1px;background:var(--ouro)}
+.stack{display:grid;gap:22px}
+.mt{margin-top:40px}
+</style>
+
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Raízes, página inicial">
+      <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#C29A53" stroke-width="1.5"/><path d="M20 6v28M20 22c-6 0-9 5-10 10M20 22c6 0 9 5 10 10M20 15c-4 0-6-3-7-6M20 15c4 0 6-3 7-6" fill="none" stroke="#C29A53" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span><b>RAÍZES</b><small>Museu Digital</small></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Principal"></nav>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      Salas
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="scrim" data-close-drawer></div>
+  <aside role="dialog" aria-modal="true" aria-label="Todas as salas do museu">
+    <div class="drawer-head">
+      <span class="eyebrow">Percurso do museu</span>
+      <button class="icon-btn" data-close-drawer aria-label="Fechar menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <ol id="drawerList"></ol>
+  </aside>
+</div>
+
+<main id="conteudo" tabindex="-1"></main>
+
+<footer class="foot" id="footer"></footer>
+<button class="to-top" id="toTop" aria-label="Voltar ao topo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<dialog id="instrDlg" aria-labelledby="instrTitle"></dialog>
+<dialog id="lbDlg" class="lb" aria-label="Galeria ampliada"></dialog>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const C={preto:'#171512',terra:'#70452D',ouro:'#C29A53',bege:'#F0E7D8',areia:'#D9C7A8',verde:'#263D31',branco:'#FAF8F3'};
+const arrow='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+/* ============ ROUTES ============ */
+const ROUTES=[
+ ['inicio','Início'],['capoeira','Capoeira'],['ijexa','Ijexá'],['maculele','Maculelê'],
+ ['historia','História e ancestralidade'],['instrumentos','Instrumentos musicais'],['linha-do-tempo','Linha do tempo'],
+ ['galeria','Galeria cultural'],['curiosidades','Curiosidades, quiz e glossário'],['comparacao','Comparação'],
+ ['preservacao','Preservação cultural'],['sobre','Sobre o projeto'],['referencias','Referências']
+];
+const NAV_MAIN=['inicio','capoeira','ijexa','maculele','historia','instrumentos','linha-do-tempo','galeria','curiosidades'];
+const NAV_SHORT={inicio:'Início',historia:'História',instrumentos:'Instrumentos','linha-do-tempo':'Linha do tempo',galeria:'Galeria',curiosidades:'Descobrir'};
+
+/* ============ ART (SVG) ============ */
+const A={};
+A.berimbau=(s=C.ouro,w=C.terra)=>`<svg viewBox="0 0 200 200" aria-hidden="true"><path d="M78 10 Q30 100 78 190" fill="none" stroke="${w}" stroke-width="7" stroke-linecap="round"/><path d="M78 10 Q30 100 78 190" fill="none" stroke="${s}" stroke-width="1" stroke-linecap="round" opacity=".5"/><line x1="78" y1="12" x2="78" y2="188" stroke="${s}" stroke-width="1.6"/><path d="M60 140 q-30 0-30 24 q0 22 26 22 q14 0 20-10" fill="${w}" stroke="${s}" stroke-width="1.5"/><path d="M62 146 q-16 4-18 18" fill="none" stroke="${s}" stroke-width="1" opacity=".6"/><line x1="58" y1="143" x2="80" y2="143" stroke="${s}" stroke-width="2"/><g transform="translate(118 70) rotate(18)"><line x1="0" y1="0" x2="0" y2="70" stroke="${s}" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(140 120)"><path d="M0 0 q-14 0-14 18 q0 16 14 16 q14 0 14-16 q0-18-14-18z" fill="none" stroke="${s}" stroke-width="1.5"/><path d="M-12 12h24M-13 20h26M-10 28h20" stroke="${s}" stroke-width=".8" opacity=".7"/><line x1="0" y1="0" x2="0" y2="-12" stroke="${s}" stroke-width="2"/></g><circle cx="110" cy="132" r="6" fill="none" stroke="${s}" stroke-width="1.5"/></svg>`;
+A.pandeiro=(s=C.ouro,w=C.terra)=>{let j='';for(let i=0;i<5;i++){const a=i/5*Math.PI*2-Math.PI/2,x=100+Math.cos(a)*66,y=100+Math.sin(a)*66;j+=`<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*180/Math.PI+90).toFixed(0)})"><rect x="-11" y="-5" width="22" height="10" fill="${C.preto}" stroke="${s}" stroke-width="1"/><circle cx="-5" cy="0" r="3.5" fill="none" stroke="${s}" stroke-width="1.3"/><circle cx="5" cy="0" r="3.5" fill="none" stroke="${s}" stroke-width="1.3"/></g>`}return `<svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="74" fill="${w}" stroke="${s}" stroke-width="2"/><circle cx="100" cy="100" r="60" fill="${C.areia}" opacity=".9"/><circle cx="100" cy="100" r="60" fill="none" stroke="${s}" stroke-width="1"/><circle cx="100" cy="100" r="40" fill="none" stroke="${C.terra}" stroke-width=".6" opacity=".4"/>${j}</svg>`};
+A.atabaque=(s=C.ouro,w=C.terra)=>{let r='';for(let i=0;i<7;i++){const x=58+i*14;r+=`<path d="M${x} 34 L${x+(i<3?-4:i>3?4:0)+6} 120" stroke="${s}" stroke-width="1" opacity=".8"/>`}return `<svg viewBox="0 0 200 200" aria-hidden="true"><path d="M54 32 Q48 110 70 190 L130 190 Q152 110 146 32 Z" fill="${w}" stroke="${s}" stroke-width="2"/><ellipse cx="100" cy="32" rx="46" ry="10" fill="${C.areia}" stroke="${s}" stroke-width="2"/>${r}<path d="M52 120 Q100 130 148 120" fill="none" stroke="${s}" stroke-width="2"/><g fill="${C.preto}" stroke="${s}" stroke-width="1">${[60,76,92,108,124,140].map(x=>`<rect x="${x-4}" y="118" width="8" height="14"/>`).join('')}</g><path d="M66 160 Q100 166 134 160" fill="none" stroke="${s}" stroke-width="1" opacity=".5"/></svg>`};
+A.agogo=(s=C.ouro,w=C.terra)=>`<svg viewBox="0 0 200 200" aria-hidden="true"><path d="M70 170 Q70 120 100 96 Q130 120 130 170" fill="none" stroke="${s}" stroke-width="5" stroke-linecap="round"/><g transform="translate(46 30) rotate(-14)"><path d="M0 0 L40 0 L48 90 L-8 90 Z" fill="${w}" stroke="${s}" stroke-width="2"/><ellipse cx="20" cy="90" rx="28" ry="6" fill="${C.preto}" stroke="${s}" stroke-width="2"/></g><g transform="translate(118 52) rotate(14)"><path d="M0 0 L32 0 L38 70 L-6 70 Z" fill="${w}" stroke="${s}" stroke-width="2"/><ellipse cx="16" cy="70" rx="22" ry="5" fill="${C.preto}" stroke="${s}" stroke-width="2"/></g><line x1="150" y1="170" x2="182" y2="120" stroke="${s}" stroke-width="3" stroke-linecap="round"/></svg>`;
+A.reco=(s=C.ouro,w=C.terra)=>{let g='';for(let y=40;y<=160;y+=8)g+=`<line x1="78" y1="${y}" x2="122" y2="${y}" stroke="${s}" stroke-width="1.6"/>`;return `<svg viewBox="0 0 200 200" aria-hidden="true"><rect x="74" y="26" width="52" height="150" rx="8" fill="${w}" stroke="${s}" stroke-width="2"/>${g}<line x1="140" y1="40" x2="170" y2="150" stroke="${s}" stroke-width="4" stroke-linecap="round"/><circle cx="100" cy="186" r="0"/></svg>`};
+A.xequere=(s=C.ouro,w=C.terra)=>{let b='';for(let r=0;r<9;r++){const y=72+r*13,half=Math.sin((r+1)/10*Math.PI)*58;for(let x=-half;x<=half;x+=12)b+=`<circle cx="${(100+x+(r%2?6:0)).toFixed(1)}" cy="${y}" r="3.2" fill="${C.areia}" stroke="${s}" stroke-width=".8"/>`}return `<svg viewBox="0 0 200 200" aria-hidden="true"><defs><clipPath id="xq"><path d="M100 56 C40 56 30 120 44 160 C58 196 142 196 156 160 C170 120 160 56 100 56Z"/></clipPath></defs><path d="M90 20 Q86 40 88 60 L112 60 Q114 40 110 20 Z" fill="${w}" stroke="${s}" stroke-width="2"/><path d="M100 56 C40 56 30 120 44 160 C58 196 142 196 156 160 C170 120 160 56 100 56Z" fill="${w}" stroke="${s}" stroke-width="2"/><g clip-path="url(#xq)" stroke="${s}" stroke-width=".7" opacity=".7">${Array.from({length:12},(_,i)=>`<path d="M${30+i*14} 50 L${30+i*14+20} 200" fill="none"/><path d="M${30+i*14} 50 L${30+i*14-20} 200" fill="none"/>`).join('')}</g><g clip-path="url(#xq)">${b}</g></svg>`};
+A.afoxe=(s=C.ouro,w=C.terra)=>{let b='';for(let r=0;r<6;r++){const y=40+r*13,half=Math.sin((r+1)/7*Math.PI)*40;for(let x=-half;x<=half;x+=11)b+=`<circle cx="${(100+x+(r%2?5:0)).toFixed(1)}" cy="${y}" r="3" fill="${C.areia}" stroke="${s}" stroke-width=".8"/>`}return `<svg viewBox="0 0 200 200" aria-hidden="true"><defs><clipPath id="af"><circle cx="100" cy="72" r="48"/></clipPath></defs><circle cx="100" cy="72" r="48" fill="${w}" stroke="${s}" stroke-width="2"/><g clip-path="url(#af)">${b}</g><rect x="92" y="118" width="16" height="70" rx="5" fill="${w}" stroke="${s}" stroke-width="2"/><line x1="92" y1="132" x2="108" y2="132" stroke="${s}" stroke-width="1"/></svg>`};
+A.bastoes=(s=C.ouro,w=C.terra)=>`<svg viewBox="0 0 200 200" aria-hidden="true"><g stroke-linecap="round"><line x1="40" y1="170" x2="160" y2="30" stroke="${w}" stroke-width="12"/><line x1="40" y1="170" x2="160" y2="30" stroke="${s}" stroke-width="1" opacity=".6"/><line x1="40" y1="30" x2="160" y2="170" stroke="${w}" stroke-width="12"/><line x1="40" y1="30" x2="160" y2="170" stroke="${s}" stroke-width="1" opacity=".6"/></g><g fill="none" stroke="${s}" stroke-width="1.4" opacity=".9"><path d="M100 82 l0 -24M100 118 l0 24M82 100 l-24 0M118 100 l24 0"/><circle cx="100" cy="100" r="30" stroke-dasharray="3 6"/></g></svg>`;
+const INSTR_ART={berimbau:A.berimbau,pandeiro:A.pandeiro,atabaque:A.atabaque,agogo:A.agogo,reco:A.reco,xequere:A.xequere,afoxe:A.afoxe};
+
+function seeded(n){let x=n;return()=>{x=(x*9301+49297)%233280;return x/233280}}
+/* abstract roda scene: a ring of figures (dots/strokes) seen from above at an angle */
+A.scene=(opt={})=>{
+  const {seed=3,bg1=C.verde,bg2=C.preto,ring=18,motif='roda',accent=C.ouro,w=1600,h=1000}=opt;
+  const rnd=seeded(seed);let g='';
+  const cx=w*.5,cy=h*.62,rx=w*.36,ry=h*.2;
+  // ground texture lines
+  for(let i=0;i<70;i++){const y=h*.45+rnd()*h*.55,x=rnd()*w,l=40+rnd()*160;g+=`<line x1="${x.toFixed(0)}" y1="${y.toFixed(0)}" x2="${(x+l).toFixed(0)}" y2="${(y+rnd()*4-2).toFixed(0)}" stroke="${accent}" stroke-opacity="${(.04+rnd()*.06).toFixed(2)}" stroke-width="1"/>`}
+  // light shaft
+  g+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx*1.05}" ry="${ry*1.25}" fill="url(#glow${seed})"/>`;
+  g+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="${accent}" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="2 9"/>`;
+  // figures around ring
+  const figs=[];for(let i=0;i<ring;i++){const a=i/ring*Math.PI*2+.2;figs.push({a,x:cx+Math.cos(a)*rx,y:cy+Math.sin(a)*ry})}
+  figs.sort((p,q)=>p.y-q.y).forEach((p,i)=>{const sc=.55+(p.y-(cy-ry))/(2*ry)*.75,hh=150*sc,ww=34*sc;const tone=p.y<cy?'#2a2620':'#120f0c';
+    g+=`<g transform="translate(${p.x.toFixed(0)} ${p.y.toFixed(0)})"><ellipse cx="0" cy="2" rx="${ww*.9}" ry="${ww*.25}" fill="#000" opacity=".35"/><path d="M${-ww/2} 0 Q${-ww/2} ${-hh*.62} 0 ${-hh*.72} Q${ww/2} ${-hh*.62} ${ww/2} 0 Z" fill="${tone}" stroke="${accent}" stroke-opacity=".25"/><circle cx="0" cy="${-hh*.82}" r="${ww*.32}" fill="${tone}" stroke="${accent}" stroke-opacity=".25"/></g>`;
+    if(motif==='roda'&&i>ring-5&&p.y>cy){g+=`<g transform="translate(${(p.x+ww*.6).toFixed(0)} ${(p.y-hh*.95).toFixed(0)}) rotate(-8) scale(${sc})"><path d="M0 0 Q-30 90 0 180" fill="none" stroke="${C.terra}" stroke-width="5"/><line x1="0" y1="0" x2="0" y2="180" stroke="${accent}" stroke-width="1.2"/><circle cx="-6" cy="150" r="16" fill="${C.terra}" stroke="${accent}" stroke-width="1"/></g>`}
+  });
+  // center motif
+  if(motif==='roda'){g+=`<g transform="translate(${cx} ${cy})" fill="none" stroke="${accent}" stroke-width="2.2" stroke-linecap="round" opacity=".9"><path d="M-120 -10 Q-60 -150 10 -90 T120 -20"/><path d="M-110 10 Q-20 -60 60 -120" stroke-opacity=".5"/><circle cx="-40" cy="-60" r="5" fill="${accent}"/></g>`}
+  if(motif==='bastoes'){for(let i=0;i<6;i++){const a=i/6*Math.PI*2,x=cx+Math.cos(a)*rx*.45,y=cy+Math.sin(a)*ry*.5;g+=`<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)})" stroke-linecap="round"><line x1="-40" y1="-150" x2="10" y2="-60" stroke="${C.terra}" stroke-width="7"/><line x1="40" y1="-150" x2="-10" y2="-60" stroke="${C.terra}" stroke-width="7"/><circle cx="0" cy="-118" r="10" fill="${accent}" opacity=".7"/></g>`}}
+  if(motif==='cortejo'){for(let i=0;i<9;i++){const x=w*.08+i*w*.1,y=h*.5+i*h*.04;g+=`<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)})"><path d="M-22 0 Q-22 -110 0 -122 Q22 -110 22 0Z" fill="#f2ead9" opacity=".85"/><circle cx="0" cy="-138" r="15" fill="#2a2620"/><path d="M-18 -150 Q0 -170 18 -150" fill="#f2ead9"/><path d="M-26 -80 l52 0" stroke="${C.ouro}" stroke-width="2"/><path d="M-20 -60 l40 18" stroke="#3a5ea8" stroke-opacity=".8" stroke-width="3"/></g>`}}
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><radialGradient id="glow${seed}"><stop offset="0" stop-color="${accent}" stop-opacity=".28"/><stop offset="1" stop-color="${accent}" stop-opacity="0"/></radialGradient><linearGradient id="sky${seed}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${bg2}"/><stop offset=".55" stop-color="${bg1}"/><stop offset="1" stop-color="${bg2}"/></linearGradient><filter id="grain${seed}"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .76 0 0 0 0 .6 0 0 0 0 .33 0 0 0 .07 0"/></filter></defs><rect width="${w}" height="${h}" fill="url(#sky${seed})"/>${g}<rect width="${w}" height="${h}" filter="url(#grain${seed})"/></svg>`;
+};
+/* motion glyphs for movements */
+function movGlyph(kind){
+  const st=`stroke="${C.ouro}" fill="none" stroke-width="2.4" stroke-linecap="round"`,ink=`stroke="${C.terra}" fill="none" stroke-width="5" stroke-linecap="round"`;
+  const base=`<line x1="20" y1="200" x2="300" y2="200" stroke="${C.areia}" stroke-width="1"/>`;
+  const P={
+   ginga:`<path d="M90 190 L130 120 L170 190" ${ink}/><path d="M150 190 L190 120 L230 190" ${ink} opacity=".35"/><path d="M80 90 C130 60 190 60 240 90" ${st} stroke-dasharray="4 7"/><path d="M232 82 l10 8 -12 4" ${st}/><circle cx="130" cy="100" r="12" ${ink}/>`,
+   au:`<path d="M60 180 C110 40 210 40 260 180" ${st} stroke-dasharray="4 7"/><circle cx="160" cy="70" r="12" ${ink}/><path d="M120 190 L160 110 L200 190" ${ink}/><path d="M120 110 L200 110" ${ink} opacity=".5"/>`,
+   negativa:`<path d="M60 190 Q110 180 160 186 L250 160" ${ink}/><circle cx="70" cy="168" r="11" ${ink}/><path d="M150 150 Q200 120 260 140" ${st} stroke-dasharray="4 7"/>`,
+   esquiva:`<path d="M160 190 L160 120" ${ink}/><circle cx="130" cy="108" r="12" ${ink}/><path d="M200 80 Q160 70 120 110" ${st} stroke-dasharray="4 7"/><path d="M110 60 C90 90 100 120 130 140" ${st}/>`,
+   armada:`<circle cx="160" cy="125" r="70" ${st} stroke-dasharray="4 7"/><path d="M160 190 L160 120 L230 80" ${ink}/><path d="M222 62 l14 12 -18 4" ${st}/>`,
+   meialua:`<path d="M90 190 L130 150 L110 110" ${ink}/><path d="M130 150 C170 50 260 70 270 140" ${st} stroke-dasharray="4 7"/><path d="M262 128 l8 14 -16 0" ${st}/><circle cx="96" cy="172" r="10" ${ink}/>`,
+   rasteira:`<path d="M70 192 Q150 186 250 194" ${st} stroke-dasharray="4 7"/><path d="M90 170 L140 192" ${ink}/><path d="M220 120 L240 190 M230 120 L210 190" ${ink} opacity=".45"/>`,
+   queixada:`<path d="M80 110 C120 30 230 30 260 120" ${st} stroke-dasharray="4 7"/><path d="M140 190 L160 120 L250 60" ${ink}/><path d="M250 112 l12 10 -16 4" ${st}/>`,
+   cocorinha:`<path d="M130 190 Q150 150 175 190" ${ink}/><circle cx="152" cy="140" r="12" ${ink}/><path d="M125 130 Q152 100 180 130" ${ink} opacity=".6"/><path d="M60 100 C130 70 190 70 260 100" ${st} stroke-dasharray="4 7"/>`
+  };
+  return `<svg viewBox="0 0 320 240" role="img" aria-label="Diagrama de trajetória do movimento">${base}${P[kind]||''}</svg>`;
+}
+/* small timeline illustrations */
+function miniIll(k){
+  const s=C.ouro;
+  const M={
+   navio:`<path d="M10 55 Q60 70 110 55 L100 70 L20 70Z" fill="none" stroke="${s}" stroke-width="2"/><path d="M60 55 V12 M60 14 L88 40 L60 40 M60 18 L36 40 L60 40" fill="none" stroke="${s}" stroke-width="1.6"/><path d="M0 76 q15 -6 30 0 t30 0 t30 0 t30 0" fill="none" stroke="${s}" stroke-width="1" opacity=".6"/>`,
+   casa:`<path d="M20 70 V40 L50 18 L80 40 V70 Z M90 70 V46 L104 34 L118 46 V70" fill="none" stroke="${s}" stroke-width="1.8"/><circle cx="50" cy="52" r="6" fill="none" stroke="${s}"/>`,
+   gravura:`<rect x="14" y="8" width="92" height="64" fill="none" stroke="${s}" stroke-width="1.6"/><path d="M28 62 L44 36 L56 62 M70 62 L82 30 L96 62" fill="none" stroke="${s}" stroke-width="1.6"/><path d="M14 64 h92" stroke="${s}" stroke-width=".8"/>`,
+   lei:`<rect x="34" y="6" width="52" height="68" fill="none" stroke="${s}" stroke-width="1.6"/><path d="M42 20h36M42 30h36M42 40h28M42 50h36M42 60h20" stroke="${s}" stroke-width="1"/>`,
+   circulo:`<circle cx="60" cy="40" r="28" fill="none" stroke="${s}" stroke-width="1.6" stroke-dasharray="3 5"/><circle cx="60" cy="40" r="5" fill="${s}"/>`,
+   berimbau:`<path d="M50 4 Q30 40 50 76" fill="none" stroke="${s}" stroke-width="2.4"/><line x1="50" y1="4" x2="50" y2="76" stroke="${s}"/><circle cx="44" cy="64" r="9" fill="none" stroke="${s}" stroke-width="1.6"/>`,
+   tambor:`<path d="M42 12 Q38 46 48 74 L72 74 Q82 46 78 12 Z" fill="none" stroke="${s}" stroke-width="1.6"/><ellipse cx="60" cy="12" rx="18" ry="4" fill="none" stroke="${s}" stroke-width="1.6"/>`,
+   selo:`<circle cx="60" cy="40" r="30" fill="none" stroke="${s}" stroke-width="1.6"/><circle cx="60" cy="40" r="22" fill="none" stroke="${s}" stroke-width=".8"/><path d="M48 40 l8 8 16 -16" fill="none" stroke="${s}" stroke-width="2"/>`,
+   globo:`<circle cx="60" cy="40" r="30" fill="none" stroke="${s}" stroke-width="1.6"/><ellipse cx="60" cy="40" rx="12" ry="30" fill="none" stroke="${s}"/><path d="M30 40h60M34 26h52M34 54h52" stroke="${s}" stroke-width=".8"/>`,
+   livro:`<path d="M60 18 Q40 10 18 14 V68 Q40 64 60 72 Q80 64 102 68 V14 Q80 10 60 18Z M60 18 V72" fill="none" stroke="${s}" stroke-width="1.6"/>`
+  };
+  return `<svg class="ill" viewBox="0 0 120 80" aria-hidden="true">${M[k]||M.circulo}</svg>`;
+}
+/* typographic plate for masters (no portraits — avoids misrepresentation) */
+function plateType(name,years,line,seed){
+  return `<svg viewBox="0 0 600 760" aria-hidden="true"><rect width="600" height="760" fill="${C.preto}"/><rect x="24" y="24" width="552" height="712" fill="none" stroke="${C.ouro}" stroke-width="1"/><g opacity=".14">${A.scene({seed,ring:12,w:600,h:760}).replace(/^<svg[^>]*>|<\/svg>$/g,'')}</g><text x="300" y="330" text-anchor="middle" fill="${C.ouro}" font-family="Fraunces, Georgia, serif" font-size="26" letter-spacing="6">MESTRE</text><text x="300" y="400" text-anchor="middle" fill="${C.bege}" font-family="Fraunces, Georgia, serif" font-size="64" font-weight="800">${name}</text><text x="300" y="450" text-anchor="middle" fill="${C.areia}" font-family="Manrope, sans-serif" font-size="20" letter-spacing="4">${years}</text><line x1="240" y1="490" x2="360" y2="490" stroke="${C.ouro}"/><text x="300" y="530" text-anchor="middle" fill="${C.areia}" font-family="Manrope, sans-serif" font-size="17">${line}</text></svg>`;
+}
+function plateInstr(fn,bg){return `<svg viewBox="0 0 600 600" aria-hidden="true"><rect width="600" height="600" fill="${bg}"/><circle cx="300" cy="300" r="250" fill="none" stroke="${C.ouro}" stroke-opacity=".25" stroke-dasharray="2 10"/><g transform="translate(100 100) scale(2)">${fn().replace(/^<svg[^>]*>|<\/svg>$/g,'')}</g></svg>`}
+function plateDiagram(){return rodaSVG(true)}
+
+/* ============ DATA ============ */
+const INSTR={
+ berimbau:{nome:'Berimbau',em:['Capoeira'],fis:'Arco de madeira (verga) tensionado por um fio de aço, com uma cabaça presa à parte inferior que funciona como caixa de ressonância. É tocado com uma baqueta, um dobrão (moeda ou pedra) e o caxixi, pequeno chocalho de palha trançada.',mat:'Tradicionalmente, verga de madeiras como a biriba; arame de aço (muitas vezes retirado de pneus); cabaça; caxixi de palha e sementes.',som:'O fio é percutido pela baqueta. O dobrão encostado ou afastado do arame altera a altura do som, e a cabaça aproximada ou afastada da barriga do tocador modula a ressonância.',fun:'Comanda a roda. Os toques do berimbau indicam o andamento e o tipo de jogo. Em muitas rodas tocam três berimbaus com timbres diferentes: gunga (grave), médio e viola (agudo).',imp:'É o principal símbolo da capoeira. Arcos musicais com cabaça existem em várias regiões da África Centro-Ocidental e Austral, e pesquisadores relacionam o berimbau a esses instrumentos.',cur:'Em fontes do século XIX o arco musical aparece também nas ruas, nas mãos de vendedores ambulantes. Sua associação forte e quase exclusiva com a capoeira se consolida no século XX.'},
+ pandeiro:{nome:'Pandeiro',em:['Capoeira','Maculelê'],fis:'Aro circular de madeira com uma pele esticada de um lado e pares de platinelas (pequenos discos metálicos) encaixados no aro.',mat:'Madeira, pele animal ou sintética e metal nas platinelas.',som:'É tocado com a mão: batidas na pele com dedos, polegar e palma, combinadas ao chacoalhar das platinelas.',fun:'Preenche e sustenta o ritmo ao lado dos berimbaus. Na Capoeira Regional, a bateria de Mestre Bimba era formada por um berimbau e dois pandeiros.',imp:'Instrumento de origem ibérica e árabe que ganhou no Brasil uma identidade própria, presente no samba, na capoeira e em muitas manifestações populares.',cur:'O pandeiro é um bom exemplo de como a cultura afro-brasileira incorporou e reinventou instrumentos de outras origens.'},
+ atabaque:{nome:'Atabaque',em:['Capoeira','Ijexá e afoxé','Maculelê'],fis:'Tambor alto, de corpo de madeira em aduelas, mais largo em cima do que embaixo, com pele presa por cordas e cunhas ou por tarraxas.',mat:'Madeira, pele animal (em geral de boi ou cabra), cordas e cunhas de madeira, ou ferragens.',som:'Tocado com as mãos ou com varetas (aguidavis), conforme a tradição. A tensão da pele define a afinação.',fun:'Marca e sustenta a base rítmica. Nos candomblés e afoxés há, em geral, três atabaques de tamanhos diferentes, chamados rum (o maior), rumpi e lé.',imp:'Tem papel central nas religiões de matriz africana, onde é tratado com cuidados rituais. Nas rodas de capoeira e de Maculelê aparece com função musical.',cur:'Nem toda roda de capoeira usa atabaque: a bateria muda de grupo para grupo e de estilo para estilo.'},
+ agogo:{nome:'Agogô',em:['Capoeira','Ijexá e afoxé','Maculelê'],fis:'Duas (às vezes mais) campânulas metálicas de tamanhos diferentes, unidas por uma haste curva.',mat:'Ferro ou outros metais; há versões de castanha ou de madeira.',som:'Percutido com uma vareta, alterna sons agudo e grave, formando frases rítmicas. Apertar as campânulas uma contra a outra produz um terceiro efeito.',fun:'Funciona como linha-guia: a frase do agogô orienta os demais tocadores. No ijexá, sua célula rítmica é uma das marcas mais reconhecíveis do ritmo.',imp:'O nome vem do iorubá. Sinos duplos de ferro têm longa história em várias sociedades da África Ocidental.',cur:'No ijexá, o agogô costuma ser o instrumento que "conta" o ritmo para o cortejo inteiro.'},
+ reco:{nome:'Reco-reco',em:['Capoeira'],fis:'Corpo cilíndrico com sulcos transversais. Pode ser de bambu, de madeira ou de metal com molas.',mat:'Bambu, madeira, cabaça ou metal.',som:'Uma vareta é raspada sobre os sulcos, produzindo um som áspero e contínuo.',fun:'Acrescenta textura à bateria, reforçando o pulso e o andamento.',imp:'Raspadores semelhantes existem em diversas tradições africanas e americanas. Na capoeira, é comum em baterias ligadas à Capoeira Angola.',cur:'É um dos instrumentos mais simples de fabricar, o que ajuda a explicar sua presença em festas populares de todo o país.'},
+ xequere:{nome:'Xequerê',em:['Ijexá e afoxé'],fis:'Cabaça grande e seca, envolta por uma rede de fios na qual se prendem contas ou sementes.',mat:'Cabaça, linha ou barbante e contas (sementes, miçangas).',som:'É chacoalhado e girado; as contas batem na superfície da cabaça. Também pode ser percutido com a palma no fundo.',fun:'Dá corpo e brilho ao som do afoxé, reforçando a pulsação do ijexá.',imp:'Instrumento ligado à tradição iorubá (lá conhecido como shekere). No Brasil é usado em afoxés, terreiros e na música popular.',cur:'Em alguns contextos brasileiros, os nomes "xequerê", "agbê" e "afoxé" são usados para instrumentos parecidos; o uso varia de região para região.'},
+ afoxe:{nome:'Afoxé (instrumento)',em:['Ijexá e afoxé'],fis:'Cabaça pequena, geralmente com cabo, coberta por fileiras de contas. Há versões industriais de plástico e metal (o cabasa).',mat:'Cabaça, contas, linha; ou materiais industriais.',som:'As contas são giradas e friccionadas contra a superfície, num chiado rítmico.',fun:'Marca subdivisões rápidas do ritmo e completa o desenho percussivo.',imp:'O mesmo nome designa o instrumento e a manifestação cultural, o que muitas vezes causa confusão. Este museu sempre indica de qual dos dois está falando.',cur:'Atenção: o afoxé que é instrumento e o afoxé que é cortejo carnavalesco são coisas diferentes que compartilham o nome.'}
+};
+const INSTR_GROUPS=[['Capoeira',['berimbau','pandeiro','atabaque','agogo','reco']],['Ijexá e afoxé',['agogo','atabaque','xequere','afoxe']],['Maculelê',['atabaque','pandeiro','agogo']]];
+
+const MOVES=[
+ ['ginga','Ginga','Movimento-base, contínuo, em que o corpo se desloca de um lado a outro, com os pés em triângulo e os braços protegendo o rosto. Não é parada: é a partir da ginga que surgem ataques, defesas e floreios.'],
+ ['au','Aú','Deslocamento lateral apoiado nas mãos, parecido com a "estrela" da ginástica, mas feito com atenção ao parceiro e, muitas vezes, mais fechado e lento, sobretudo na Angola.'],
+ ['negativa','Negativa','Defesa rente ao chão: o corpo desce apoiado em uma das mãos e numa perna dobrada, com a outra estendida. Permite escapar e preparar o contragolpe.'],
+ ['esquiva','Esquiva','Família de movimentos de defesa em que o corpo sai da trajetória do golpe abaixando, inclinando ou recuando, sem bloquear de frente.'],
+ ['armada','Armada','Golpe giratório: o corpo gira e a perna estendida descreve um arco alto, na altura do tronco ou da cabeça.'],
+ ['meialua','Meia-lua de compasso','Golpe giratório com as mãos apoiadas no chão; a perna faz um arco amplo enquanto o tronco fica baixo. É um dos movimentos mais característicos da capoeira.'],
+ ['rasteira','Rasteira','Movimento de desequilíbrio: uma perna varre o apoio do outro jogador junto ao chão. Exige leitura do tempo do parceiro.'],
+ ['queixada','Queixada','Golpe em que a perna sobe de fora para dentro, num arco lateral, a partir de uma base deslocada.'],
+ ['cocorinha','Cocorinha','Defesa simples e fundamental: agachar sobre os pés, protegendo a cabeça com o braço. Muito usada no aprendizado inicial.']
+];
+
+const TIMELINE=[
+ {w:'Séc. XVI–1850',t:'Tráfico transatlântico e presença forçada de africanos no Brasil',d:'Por mais de três séculos, africanos de muitos povos foram trazidos à força. Estimativas do banco de dados Slave Voyages indicam cerca de 4,8 milhões de pessoas desembarcadas no Brasil, o maior destino das Américas. A Lei Eusébio de Queirós (1850) proibiu o tráfico, mas a escravidão continuou.',s:'Slave Voyages (Emory University); Lei nº 581, de 4/9/1850.',tag:'doc',ill:'navio',cat:'historia'},
+ {w:'Séc. XVII–XIX',t:'Formação de comunidades afro-brasileiras',d:'Quilombos, irmandades religiosas, terreiros, cantos de trabalho e redes de ajuda mútua permitiram reconstruir laços, línguas, crenças e práticas culturais. Palmares, no século XVII, é o quilombo mais conhecido.',s:'Fundação Cultural Palmares; historiografia sobre quilombos e irmandades.',tag:'doc',ill:'casa',cat:'historia'},
+ {w:'Século XIX',t:'Capoeira nos registros históricos',d:'Registros policiais do Rio de Janeiro, especialmente desde as primeiras décadas do século XIX, citam prisões por "capoeira". O pintor Johann Moritz Rugendas publicou em 1835 a gravura "Jogar capoëra ou danse de la guerre", uma das imagens mais antigas conhecidas da prática.',s:'Rugendas, Voyage pittoresque dans le Brésil (1835); C. E. L. Soares, A capoeira escrava (2001).',tag:'doc',ill:'gravura',cat:'capoeira'},
+ {w:'1888',t:'Abolição formal da escravidão',d:'A Lei Áurea (13 de maio de 1888) extinguiu a escravidão no Brasil, sem políticas de integração para a população liberta.',s:'Lei nº 3.353, de 13/5/1888.',tag:'doc',ill:'lei',cat:'historia'},
+ {w:'1890',t:'Capoeiragem vira crime no Código Penal',d:'O Decreto nº 847, de 11 de outubro de 1890, incluiu no capítulo "Dos vadios e capoeiras" a proibição de exercícios "de agilidade e destreza corporal conhecidos pela denominação capoeiragem" (art. 402).',s:'Decreto nº 847/1890, arts. 402–404.',tag:'doc',ill:'lei',cat:'capoeira'},
+ {w:'Fim do séc. XIX',t:'Clubes africanos no carnaval de Salvador',d:'Clubes carnavalescos de temática africana, como a Embaixada Africana e os Pândegos d\'África, são apontados por pesquisadores como precursores dos afoxés. Sofreram proibições no início do século XX.',s:'A. Risério, Carnaval Ijexá (1981).',tag:'int',ill:'tambor',cat:'ijexa'},
+ {w:'Anos 1930',t:'Mestre Bimba e a Capoeira Regional',d:'Em Salvador, Manoel dos Reis Machado, o Mestre Bimba, sistematiza um método de ensino, chamado por ele de Luta Regional Baiana. Sua academia é frequentemente citada como a primeira a obter reconhecimento oficial, em 1937.',s:'F. Abreu, Bimba é bamba (1999); M. Sodré, Mestre Bimba: corpo de mandinga (2002).',tag:'doc',ill:'berimbau',cat:'capoeira'},
+ {w:'1940',t:'Novo Código Penal',d:'O Código Penal de 1940 (Decreto-Lei nº 2.848) não reproduziu o crime de capoeiragem, encerrando a criminalização explícita no texto legal.',s:'Decreto-Lei nº 2.848/1940.',tag:'doc',ill:'lei',cat:'capoeira'},
+ {w:'Anos 1940',t:'Mestre Pastinha e a Capoeira Angola',d:'Vicente Ferreira Pastinha organiza o Centro Esportivo de Capoeira Angola (CECA), em Salvador, data geralmente indicada como 1941, e se torna a principal referência da Angola. Em 1966, integra a delegação brasileira no I Festival Mundial de Artes Negras, em Dacar.',s:'V. F. Pastinha, Capoeira Angola (1964); M. R. Assunção (2005).',tag:'doc',ill:'berimbau',cat:'capoeira'},
+ {w:'Anos 1940',t:'Mestre Popó e o Maculelê de Santo Amaro',d:'Em Santo Amaro da Purificação (BA), Paulino Aluísio de Andrade, o Mestre Popó, reúne familiares e vizinhos e recupera o Maculelê a partir das memórias de antigos praticantes. A datação exata varia entre as fontes.',s:'Tradição oral de Santo Amaro; registros de grupos culturais.',tag:'oral',ill:'circulo',cat:'maculele'},
+ {w:'1949',t:'Fundação do Filhos de Gandhy',d:'Estivadores do porto de Salvador fundam o afoxé Filhos de Gandhy, inspirados na figura de Mahatma Gandhi e em valores de paz. Torna-se um dos maiores símbolos do ijexá no carnaval baiano.',s:'Registros do próprio afoxé; A. Risério (1981).',tag:'doc',ill:'tambor',cat:'ijexa'},
+ {w:'1974',t:'Ilê Aiyê e os blocos afro',d:'Surge em Salvador o Ilê Aiyê, primeiro bloco afro, afirmando a identidade negra no carnaval. Blocos afro e afoxés são manifestações diferentes, mas se fortaleceram juntos nessa época.',s:'Ilê Aiyê; estudos sobre o carnaval de Salvador.',tag:'doc',ill:'tambor',cat:'ijexa'},
+ {w:'1988',t:'Constituição e Fundação Cultural Palmares',d:'A Constituição Federal (arts. 215 e 216) protege as manifestações das culturas afro-brasileiras e define o patrimônio cultural imaterial. No mesmo ano é criada a Fundação Cultural Palmares.',s:'Constituição Federal de 1988; Lei nº 7.668/1988.',tag:'doc',ill:'livro',cat:'historia'},
+ {w:'2003',t:'Ensino de história e cultura afro-brasileira',d:'A Lei nº 10.639 torna obrigatório o ensino de história e cultura afro-brasileira nas escolas de educação básica.',s:'Lei nº 10.639, de 9/1/2003.',tag:'doc',ill:'livro',cat:'historia'},
+ {w:'2008',t:'Capoeira registrada pelo IPHAN',d:'O IPHAN inscreve a Roda de Capoeira no Livro das Formas de Expressão e o Ofício dos Mestres de Capoeira no Livro dos Saberes, como Patrimônio Cultural do Brasil.',s:'IPHAN, Dossiê de registro (2007–2008).',tag:'doc',ill:'selo',cat:'capoeira'},
+ {w:'2014',t:'Roda de Capoeira na lista da UNESCO',d:'A Roda de Capoeira é inscrita na Lista Representativa do Patrimônio Cultural Imaterial da Humanidade, em sessão do comitê da UNESCO realizada em Paris.',s:'UNESCO, Intangible Cultural Heritage, "Capoeira circle" (2014).',tag:'doc',ill:'globo',cat:'capoeira'}
+];
+const TAGS={doc:['b-doc','Fato documentado'],int:['b-int','Interpretação histórica'],oral:['b-oral','Tradição oral']};
+
+const CURIOS=[
+ ['Capoeira','Qual é a função do berimbau na roda?','O berimbau comanda a roda. Seu toque define o tipo de jogo e o andamento: um toque lento convida a um jogo baixo e cadenciado, um toque acelerado pede jogo mais rápido. É também ao pé do berimbau que os jogadores se agacham antes de entrar e de onde o tocador principal pode encerrar um jogo.'],
+ ['Capoeira','Quem foi Mestre Bimba?','Manoel dos Reis Machado (1899/1900–1974), baiano de Salvador, criou nos anos 1930 a Capoeira Regional. Organizou sequências de ensino, exames e formaturas, e levou a capoeira para um espaço de academia, o que ajudou a ampliar sua aceitação social numa época de forte preconceito.'],
+ ['Capoeira','Quem foi Mestre Pastinha?','Vicente Ferreira Pastinha (1889–1981) é a grande referência da Capoeira Angola. Fundou o Centro Esportivo de Capoeira Angola, escreveu o livro "Capoeira Angola" (1964) e defendeu a capoeira como arte, filosofia e tradição. Morreu pobre e quase cego, o que hoje é lembrado como sinal da pouca valorização dada aos mestres populares.'],
+ ['Capoeira','O que diferencia a Capoeira Angola da Regional?','De forma geral, a Angola tende a um jogo mais próximo do chão, cadenciado e estratégico, com bateria completa e forte ênfase na tradição dos antigos mestres. A Regional nasceu de uma sistematização feita por Mestre Bimba, com sequências de ensino e um jogo frequentemente mais rápido. Na prática há muitas variações entre grupos.'],
+ ['Ijexá','Qual é a relação entre o Ijexá e os afoxés?','Ijexá é um ritmo. Afoxé é uma manifestação cultural: grupos que saem em cortejo, sobretudo no carnaval, com cantos em iorubá e em português e ligação com o universo do candomblé. O ijexá é o ritmo principal tocado pelos afoxés, mas não se confunde com eles.'],
+ ['Maculelê','Qual é a importância de Santo Amaro para o Maculelê?','Santo Amaro da Purificação, no Recôncavo Baiano, é a cidade associada à preservação do Maculelê. Ali, Mestre Popó e sua família recuperaram a manifestação nos anos 1940, apresentando-a nas festas locais. A partir dali o Maculelê se espalhou, muitas vezes por meio dos grupos de capoeira.'],
+ ['História','Por que as manifestações afro-brasileiras são importantes para a identidade nacional?','Porque boa parte do que reconhecemos como "brasileiro" na música, na dança, na língua, na religiosidade e na culinária tem contribuição africana. Conhecer essas manifestações é também conhecer a história de quem as preservou, muitas vezes sob perseguição.'],
+ ['Capoeira','Por que a capoeira é chamada de "jogo"?','Porque na roda os capoeiristas dialogam com o corpo: perguntam, respondem, enganam, esperam. O objetivo não é necessariamente derrubar o outro, mas mostrar domínio, malícia e criatividade dentro do ritmo.'],
+ ['Ijexá','De onde vem a palavra "ijexá"?','O termo remete aos Ijexá (Ijesa), um subgrupo iorubá da região de Ilexá (Ilesa), na atual Nigéria. No Brasil, o nome passou a designar uma "nação" de candomblé e um toque ritual que, levado às ruas pelos afoxés, se tornou também ritmo do carnaval.'],
+ ['Maculelê','A história do guerreiro Maculelê é verdadeira?','É uma narrativa da tradição oral, contada em grupos de Maculelê e capoeira, sobre um jovem que teria defendido sua comunidade usando dois bastões. Ela tem valor cultural e simbólico, mas não há documentação histórica que a comprove como fato.']
+];
+
+const GLOSS=[
+ ['Afoxé (manifestação)','Grupo cultural de matriz afro-brasileira que sai em cortejo, sobretudo no carnaval, com cantos e o ritmo ijexá. Às vezes chamado de "candomblé de rua".'],
+ ['Afoxé (instrumento)','Cabaça pequena coberta por contas, tocada por fricção e chacoalho.'],
+ ['Agogô','Instrumento de duas campânulas de metal de alturas diferentes, percutidas com uma vareta.'],
+ ['Ancestralidade','Vínculo de uma pessoa ou comunidade com os que vieram antes: memória, saberes e valores herdados que orientam o presente.'],
+ ['Atabaque','Tambor alto de madeira e pele, tocado com as mãos ou varetas.'],
+ ['Aú','Movimento da capoeira em que o corpo gira lateralmente apoiado nas mãos.'],
+ ['Bateria','Conjunto de instrumentos que acompanha a roda de capoeira.'],
+ ['Berimbau','Arco musical com cabaça, instrumento que comanda a roda de capoeira.'],
+ ['Chamada','Na Capoeira Angola, ritual dentro do jogo em que um jogador "chama" o outro para uma aproximação cerimonial antes de retomar o jogo.'],
+ ['Corrido','Cantiga curta da capoeira, de resposta rápida, cantada pelo solista e respondida pelo coro.'],
+ ['Cortejo','Desfile de um grupo pelas ruas, com música e dança.'],
+ ['Ginga','Movimento-base da capoeira, contínuo e oscilante, de onde nascem ataques e defesas.'],
+ ['Grimas','Nome dado aos bastões de madeira usados no Maculelê.'],
+ ['Ijexá','Ritmo de origem ligada aos Ijexá iorubás, tocado nos candomblés e, nas ruas, pelos afoxés.'],
+ ['Ladainha','Canto solo e longo que abre a roda de Capoeira Angola, geralmente narrando histórias ou ensinamentos.'],
+ ['Maculelê','Manifestação afro-brasileira de dança coletiva com bastões, ligada a Santo Amaro da Purificação (BA).'],
+ ['Mestre','Pessoa reconhecida pela comunidade como detentora e transmissora dos saberes de uma tradição.'],
+ ['Oralidade','Transmissão de conhecimentos pela fala, pelo canto e pela convivência, em vez de textos escritos.'],
+ ['Patrimônio cultural imaterial','Práticas, saberes, celebrações e formas de expressão que uma comunidade reconhece como parte de sua identidade e que o poder público protege.'],
+ ['Quadra','Tipo de cantiga de capoeira formada por versos de quatro linhas.'],
+ ['Resistência cultural','Manutenção de práticas, crenças e identidades por grupos submetidos a dominação, perseguição ou apagamento.'],
+ ['Roda','Círculo formado por participantes e bateria, dentro do qual acontece o jogo de capoeira.'],
+ ['Toque','Padrão rítmico tocado no berimbau (ex.: Angola, São Bento Grande, Iúna) que orienta o jogo.'],
+ ['Xequerê','Cabaça envolta por rede de contas, usada nos afoxés.']
+];
+
+const QUIZ=[
+ ['Capoeira','Em que ano a Roda de Capoeira foi registrada como Patrimônio Cultural do Brasil pelo IPHAN?',['1988','2003','2008','2014'],2,'O registro pelo IPHAN aconteceu em 2008, junto com o Ofício dos Mestres de Capoeira. Em 2014 veio a inscrição pela UNESCO.'],
+ ['Capoeira','O que aconteceu com a Roda de Capoeira em 2014?',['Foi proibida em escolas','Foi inscrita na lista de Patrimônio Cultural Imaterial da Humanidade da UNESCO','Ganhou um código oficial de regras','Tornou-se esporte olímpico'],1,'Em 2014, a UNESCO inscreveu a Roda de Capoeira na Lista Representativa do Patrimônio Cultural Imaterial da Humanidade.'],
+ ['Capoeira','Qual documento de 1890 criminalizou a capoeiragem?',['A Lei Áurea','O Código Penal da República (Decreto nº 847)','A Constituição do Império','A Lei Eusébio de Queirós'],1,'O Decreto nº 847, de 1890, trazia o capítulo "Dos vadios e capoeiras", com o art. 402 proibindo a capoeiragem.'],
+ ['Capoeira','Qual mestre é a principal referência da Capoeira Regional?',['Mestre Pastinha','Mestre Popó','Mestre Bimba','Mestre Gandhy'],2,'Mestre Bimba (Manoel dos Reis Machado) sistematizou a Capoeira Regional nos anos 1930, em Salvador.'],
+ ['Capoeira','Mestre Pastinha é associado principalmente a qual estilo?',['Capoeira Regional','Capoeira Angola','Maculelê','Afoxé'],1,'Vicente Ferreira Pastinha fundou o Centro Esportivo de Capoeira Angola e é a grande referência da Angola.'],
+ ['Capoeira','Qual instrumento comanda a roda de capoeira?',['Pandeiro','Atabaque','Reco-reco','Berimbau'],3,'O berimbau define o toque, o andamento e o tipo de jogo; é ao seu pé que os jogadores entram na roda.'],
+ ['Capoeira','O que é a ginga?',['Um golpe giratório alto','O movimento-base contínuo de onde nascem ataques e defesas','Uma cantiga de abertura','O nome do maior berimbau'],1,'A ginga é o movimento fundamental, oscilante e contínuo, que mantém o capoeirista em movimento.'],
+ ['Ijexá','Qual afirmação descreve corretamente a relação entre ijexá e afoxé?',['São sinônimos','O ijexá é um ritmo; o afoxé é uma manifestação cultural que tem o ijexá como ritmo principal','O afoxé é um ritmo e o ijexá é um instrumento','O ijexá é um tipo de capoeira'],1,'Este é um ponto central do museu: ijexá é o ritmo, afoxé é o grupo/cortejo que o toca.'],
+ ['Ijexá','O termo "ijexá" remete a:',['Um subgrupo iorubá da região de Ilexá (Ilesa), na atual Nigéria','Uma cidade do Recôncavo Baiano','Um mestre de capoeira','Um tipo de madeira'],0,'Os Ijexá (Ijesa) são um subgrupo dos povos iorubás, ligado à região de Ilexá.'],
+ ['Ijexá','Qual afoxé foi fundado por estivadores do porto de Salvador em 1949?',['Ilê Aiyê','Olodum','Filhos de Gandhy','Badauê'],2,'O Filhos de Gandhy foi fundado em 1949 por estivadores. Ilê Aiyê e Olodum são blocos afro, não afoxés.'],
+ ['Ijexá','Qual instrumento funciona como linha-guia rítmica no ijexá?',['Agogô','Berimbau','Reco-reco','Pandeiro'],0,'A frase do agogô orienta o conjunto e é uma das marcas mais reconhecíveis do ijexá.'],
+ ['Maculelê','A qual cidade baiana o Maculelê está tradicionalmente associado?',['Cachoeira','Santo Amaro da Purificação','Ilhéus','Feira de Santana'],1,'Santo Amaro da Purificação, no Recôncavo, é o principal centro histórico do Maculelê.'],
+ ['Maculelê','Quem é lembrado por recuperar o Maculelê em Santo Amaro nos anos 1940?',['Mestre Bimba','Mestre Pastinha','Mestre Popó','Mestre Waldemar'],2,'Paulino Aluísio de Andrade, o Mestre Popó, reuniu familiares e recuperou a manifestação.'],
+ ['Maculelê','Qual é o elemento mais marcante do Maculelê?',['O berimbau','Os bastões (grimas) batidos em ritmo','A roupa branca obrigatória','O cortejo pelas ruas'],1,'Os bastões marcam o ritmo e coordenam os movimentos coletivos.'],
+ ['Maculelê','Como este museu trata a história do guerreiro que teria dado origem ao Maculelê?',['Como fato documentado','Como narrativa da tradição oral, sem comprovação histórica','Como invenção recente sem valor','Como lei oficial'],1,'Lendas têm valor cultural, mas não devem ser apresentadas como fatos comprovados.'],
+ ['História','O que estabelece a Lei nº 10.639/2003?',['A abolição da escravidão','A obrigatoriedade do ensino de história e cultura afro-brasileira nas escolas','O registro da capoeira como patrimônio','A criação do carnaval de Salvador'],1,'A lei incluiu no currículo oficial o ensino de história e cultura afro-brasileira.'],
+ ['História','Em que ano foi criada a Fundação Cultural Palmares?',['1888','1949','1988','2008'],2,'A Fundação Cultural Palmares foi criada em 1988, mesmo ano da Constituição Federal.']
+];
+
+const GALLERY=[
+ {cat:'Roda de capoeira',t:'A roda ao entardecer',c:'Composição ilustrada de uma roda vista do alto, com a bateria de berimbaus no primeiro plano.',art:()=>A.scene({seed:11,ring:16,w:900,h:1100})},
+ {cat:'Capoeira Angola',t:'Jogo baixo',c:'Diagrama da meia-lua de compasso, movimento rente ao chão comum ao jogo de Angola.',art:()=>movGlyph('meialua').replace('viewBox="0 0 320 240"','viewBox="0 0 320 240" style="background:#201d19"')},
+ {cat:'Instrumentos',t:'Berimbau',c:'Verga, arame, cabaça, baqueta, dobrão e caxixi.',art:()=>plateInstr(A.berimbau,C.verde)},
+ {cat:'Mestres e grupos tradicionais',t:'Mestre Pastinha',c:'Prancha tipográfica em homenagem a Vicente Ferreira Pastinha (1889–1981).',art:()=>plateType('PASTINHA','1889 — 1981','Referência da Capoeira Angola',4)},
+ {cat:'Ijexá',t:'O pulso do agogô',c:'O agogô, linha-guia do ritmo ijexá.',art:()=>plateInstr(A.agogo,C.preto)},
+ {cat:'Afoxés',t:'Cortejo de afoxé',c:'Ilustração de um cortejo em branco e azul, cores associadas a muitos afoxés baianos.',art:()=>A.scene({seed:21,motif:'cortejo',ring:0,bg1:'#1d2a24',w:1200,h:900})},
+ {cat:'Maculelê',t:'Bastões em roda',c:'Composição de um grupo de Maculelê com bastões cruzados ao centro.',art:()=>A.scene({seed:31,motif:'bastoes',ring:12,bg1:C.terra,w:1000,h:1000})},
+ {cat:'Capoeira Regional',t:'Bateria da Regional',c:'Na Regional de Mestre Bimba, um berimbau e dois pandeiros.',art:()=>plateInstr(A.pandeiro,'#2b2119')},
+ {cat:'Mestres e grupos tradicionais',t:'Mestre Bimba',c:'Prancha tipográfica em homenagem a Manoel dos Reis Machado (1899/1900–1974).',art:()=>plateType('BIMBA','1899/1900 — 1974','Criador da Capoeira Regional',7)},
+ {cat:'Instrumentos',t:'Atabaque',c:'Tambor de madeira e pele preso por cordas e cunhas.',art:()=>plateInstr(A.atabaque,'#211b15')},
+ {cat:'Roda de capoeira',t:'Organização da roda',c:'Esquema de uma das organizações possíveis da roda e da bateria.',art:()=>plateDiagram()},
+ {cat:'Ijexá',t:'Xequerê',c:'Cabaça envolta em rede de contas.',art:()=>plateInstr(A.xequere,C.verde)},
+ {cat:'Apresentações culturais',t:'Apresentação na praça',c:'Ilustração de uma roda aberta ao público, como em apresentações de grupos culturais.',art:()=>A.scene({seed:41,ring:22,bg1:'#3a2a1d',w:1200,h:800})},
+ {cat:'Mestres e grupos tradicionais',t:'Mestre Popó',c:'Prancha tipográfica em homenagem a Paulino Aluísio de Andrade, de Santo Amaro.',art:()=>plateType('POPÓ','Santo Amaro da Purificação','Referência do Maculelê',9)},
+ {cat:'Maculelê',t:'Grimas',c:'Os bastões que marcam o ritmo do Maculelê.',art:()=>plateInstr(A.bastoes,C.preto)},
+ {cat:'Afoxés',t:'Afoxé, o instrumento',c:'Mesmo nome, outra coisa: a cabaça com contas.',art:()=>plateInstr(A.afoxe,'#2b2119')}
+];
+const GAL_CATS=['Todas','Capoeira Angola','Capoeira Regional','Instrumentos','Roda de capoeira','Ijexá','Afoxés','Maculelê','Apresentações culturais','Mestres e grupos tradicionais'];
+
+/* ============ HELPERS ============ */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function hero({eyebrow,title,sub,art,actions='',short=true,meta=''}){
+  return `<section class="hero ${short?'short':''}"><div class="hero-art">${art}</div><div class="wrap"><p class="eyebrow rv">${eyebrow}</p><h1 class="rv">${title}</h1><p class="sub rv">${sub}</p>${actions?`<div class="actions rv">${actions}</div>`:''}${meta?`<div class="hero-meta rv">${meta}</div>`:''}</div><span class="scroll-cue" aria-hidden="true"></span></section>`;
+}
+function subnav(route,items){return `<nav class="subnav" aria-label="Seções desta página"><div class="wrap">${items.map(([id,l])=>`<a href="#${route}" data-anchor="${id}">${l}</a>`).join('')}</div></nav>`}
+function head(eyebrow,title,lead=''){return `<div class="sec-head"><p class="eyebrow rv">${eyebrow}</p><h2 class="rv">${title}</h2>${lead?`<p class="lead rv">${lead}</p>`:''}<hr class="rule rv"></div>`}
+function instrCard(id,dark){const i=INSTR[id];return `<button class="card instr rv" data-instr="${id}" aria-haspopup="dialog"><div class="pic">${INSTR_ART[id]()}</div><span class="k">${i.em.join(' · ')}</span><h3>${i.nome}</h3><p>${i.fun.split('. ')[0]}.</p><span class="link-arrow">Saiba mais ${arrow}</span></button>`}
+function badge(t){const [c,l]=TAGS[t];return `<span class="badge ${c}">${l}</span>`}
+function sourceNote(txt){return `<p class="muted" style="font-size:.82rem;margin-top:14px">Fontes: ${txt}</p>`}
+function nextRoom(route){const i=ROUTES.findIndex(r=>r[0]===route);const n=ROUTES[(i+1)%ROUTES.length];return `<section class="sec dark"><div class="wrap" style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap"><div><p class="eyebrow">Próxima sala</p><h2 style="margin-top:12px">${n[1]}</h2></div><a class="btn btn-gold" href="#${n[0]}">Continuar o percurso ${arrow}</a></div></section>`}
+
+function rodaSVG(plate){
+  const W=640,H=plate?640:560,cx=320,cy=plate?320:290,R=200;let g='';
+  const parts=[];const n=22;
+  for(let i=0;i<n;i++){const a=Math.PI/2+ (i/(n))*Math.PI*2;parts.push([cx+Math.cos(a)*R,cy+Math.sin(a)*R,a])}
+  // bateria occupies bottom arc: indices around angle PI/2 (bottom)
+  const bat=[['Atabaque',-4],['Reco-reco',-3],['Agogô',-2],['Pandeiro',-1],['Gunga',0],['Médio',1],['Viola',2],['Pandeiro',3]];
+  const tc=plate?C.bege:'var(--ink)';
+  const batIdx=new Set(bat.map(b=>(b[1]+n)%n));
+  parts.forEach((p,i)=>{if(!batIdx.has(i))g+=`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="9" fill="${C.areia}" stroke="${C.terra}" stroke-width="1.5"/>`});
+  bat.forEach(([l,k])=>{const p=parts[(k+n)%n];const isB=['Gunga','Médio','Viola'].includes(l);g+=`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="13" fill="${isB?C.ouro:C.terra}" stroke="${C.preto}" stroke-width="1.5"/>`;const lx=cx+Math.cos(p[2])*(R+40),ly=cy+Math.sin(p[2])*(R+36);g+=`<text x="${lx.toFixed(1)}" y="${(ly+4).toFixed(1)}" text-anchor="middle" font-size="13" font-weight="600" fill="${tc}">${l}</text>`});
+  // players at the foot of berimbau
+  g+=`<circle cx="${cx-26}" cy="${cy+R-46}" r="11" fill="${C.verde}" stroke="${C.ouro}" stroke-width="2"/><circle cx="${cx+26}" cy="${cy+R-46}" r="11" fill="${C.verde}" stroke="${C.ouro}" stroke-width="2"/>`;
+  g+=`<path d="M${cx-26} ${cy+R-64} Q${cx-60} ${cy-20} ${cx} ${cy-60} Q${cx+60} ${cy-20} ${cx+26} ${cy+R-64}" fill="none" stroke="${C.ouro}" stroke-width="1.5" stroke-dasharray="4 6"/>`;
+  g+=`<text x="${cx}" y="${cy-4}" text-anchor="middle" font-size="15" font-weight="700" fill="${tc}">Espaço do jogo</text><text x="${cx}" y="${cy+16}" text-anchor="middle" font-size="12" fill="${plate?C.areia:'var(--muted)'}">diálogo corporal entre dois jogadores</text>`;
+  g+=`<text x="${cx}" y="${cy+R-78}" text-anchor="middle" font-size="12" fill="${plate?C.areia:'var(--muted)'}">pé do berimbau</text>`;
+  const lg=plate?'':`<g transform="translate(16 ${H-28})" font-size="12" fill="${tc}"><circle cx="6" cy="0" r="6" fill="${C.areia}" stroke="${C.terra}"/><text x="18" y="4">participantes (palmas e coro)</text><circle cx="232" cy="0" r="6" fill="${C.ouro}"/><text x="244" y="4">berimbaus</text><circle cx="336" cy="0" r="6" fill="${C.terra}"/><text x="348" y="4">percussão</text><circle cx="436" cy="0" r="6" fill="${C.verde}" stroke="${C.ouro}"/><text x="448" y="4">jogadores</text></g>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Esquema da roda de capoeira: participantes em círculo, bateria com três berimbaus ao centro da parte inferior e dois jogadores agachados ao pé do berimbau.">${plate?`<rect width="${W}" height="${H}" fill="${C.preto}"/>`:''}<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.ouro}" stroke-opacity=".4" stroke-dasharray="2 8"/>${g}${lg}</svg>`;
+}
+
+/* ============ PAGES ============ */
+const P={};
+
+P.inicio=()=>`
+${hero({short:false,eyebrow:'Raízes — Museu Digital da Cultura Afro-Brasileira',title:'RAÍZES QUE PERMANECEM',sub:'Capoeira, Ijexá e Maculelê: manifestações que carregam a memória, a identidade e a riqueza da cultura afro-brasileira.',art:A.scene({seed:3}),
+ actions:`<a class="btn btn-gold" href="#inicio" data-anchor="manifestacoes">Explorar as manifestações ${arrow}</a><a class="btn btn-ghost" href="#historia">Conhecer nossa história</a>`,
+ meta:'<span><b>3</b>manifestações</span><span><b>13</b>salas</span><span><b>7</b>instrumentos</span><span><b>17</b>perguntas no quiz</span>'})}
+<div class="band p1 on-dark-band" aria-hidden="true"></div>
+<section class="sec"><div class="wrap split top-align">
+  <div><p class="eyebrow rv">Introdução</p><h2 class="rv" style="margin-top:16px">Uma história que atravessa gerações. Uma cultura que permanece viva.</h2></div>
+  <div class="prose rv"><p class="lead" style="color:var(--ink)">A cultura brasileira é resultado de <span class="gold">encontros</span>, transformações e contribuições de diferentes povos. Entre essas contribuições, as <span class="gold">tradições africanas</span> desempenham um papel fundamental. Por meio da <span class="gold">música</span>, da dança, dos movimentos, dos instrumentos e das manifestações coletivas, conhecimentos e práticas <span class="gold">atravessaram gerações</span> e continuam presentes na identidade brasileira.</p>
+  <p class="muted">Este museu digital apresenta três dessas manifestações. Cada uma tem história, linguagem e comunidade próprias. Elas se encontram na ancestralidade africana, na musicalidade e na luta pela preservação, mas não são a mesma coisa, e é assim que serão apresentadas.</p></div>
+</div>
+<div class="wrap mt"><div class="grid g4">
+  ${[['Ancestralidade','O vínculo com os que vieram antes.'],['Resistência cultural','Práticas mantidas sob perseguição.'],['Identidade','Quem somos e de onde viemos.'],['Musicalidade','Ritmo que organiza corpo e grupo.']].map(([a,b])=>`<div class="card plain rv"><h3>${a}</h3><p>${b}</p></div>`).join('')}
+</div></div></section>
+
+<section class="sec dark" id="manifestacoes"><div class="wrap">
+  ${head('As três salas principais','Três manifestações, três histórias próprias','Escolha uma das salas. Cada página traz história, instrumentos, movimentos, música e o debate sobre preservação.')}
+  <div class="mani-grid">
+   ${[['capoeira','01','Jogo · Luta · Dança · Música','Capoeira','Uma expressão afro-brasileira que reúne jogo, luta, dança, música, estratégia e resistência cultural.',A.scene({seed:5,ring:14,w:800,h:1100}),'Explorar Capoeira'],
+      ['ijexa','02','Ritmo · Cortejo · Ancestralidade','Ijexá','Uma expressão musical e rítmica de raízes afro-brasileiras, profundamente relacionada às tradições culturais iorubás.',A.scene({seed:6,motif:'cortejo',ring:0,bg1:'#1d2a24',w:800,h:1100}),'Explorar Ijexá'],
+      ['maculele','03','Dança coletiva · Bastões','Maculelê','Uma manifestação cultural marcada pela dança coletiva, pela musicalidade e pelos movimentos ritmados com bastões.',A.scene({seed:7,motif:'bastoes',ring:10,bg1:C.terra,w:800,h:1100}),'Explorar Maculelê']
+     ].map(([r,n,tag,t,d,art,b])=>`<a class="mani rv" href="#${r}" aria-label="${b}"><div class="art">${art}</div><span class="num">${n}</span><div class="body"><span class="tag">${tag}</span><h3>${t}</h3><p>${d}</p><span class="btn btn-gold" style="justify-self:start">${b} ${arrow}</span></div></a>`).join('')}
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap split">
+  <div class="rv" style="aspect-ratio:4/5;max-width:100%;overflow:hidden;background:var(--preto)">${A.scene({seed:13,ring:20,w:800,h:1000,bg1:'#2e2218'})}</div>
+  <div class="stack">
+    <p class="eyebrow rv">Destaque</p>
+    <h2 class="rv">CULTURA NÃO É APENAS PASSADO. É IDENTIDADE VIVA.</h2>
+    <div class="prose rv"><p>Capoeira, ijexá e Maculelê acontecem hoje: em academias, praças, terreiros, escolas, universidades, projetos sociais e festas de bairro. Cada roda, cada cortejo e cada apresentação renova saberes que foram passados de pessoa para pessoa, muitas vezes sem registro escrito.</p><p>Manter essas manifestações presentes nas comunidades, nas escolas e nos grupos culturais é garantir que mestres sejam reconhecidos, que jovens encontrem referências e que a história da população negra no Brasil seja contada também por quem a viveu.</p></div>
+    <div class="rv" style="display:flex;gap:14px;flex-wrap:wrap"><a class="btn btn-line" href="#preservacao">Por que preservar</a><a class="link-arrow" href="#curiosidades" data-anchor="explore">Explore as tradições ${arrow}</a></div>
+  </div>
+</div></section>
+
+<section class="sec dark"><div class="wrap">
+  ${head('Percurso do museu','Continue explorando')}
+  <div class="grid g3">
+    ${[['instrumentos','Museu dos instrumentos','Sete instrumentos, com materiais, som e função.'],['linha-do-tempo','Linha do tempo','Dos séculos de tráfico ao reconhecimento pela UNESCO.'],['galeria','Galeria cultural','Pranchas ilustradas com zoom e navegação.'],['curiosidades','Quiz e glossário','Teste o que aprendeu e consulte termos.'],['comparacao','Comparação','O que aproxima e o que distingue as três.'],['referencias','Referências','Fontes institucionais e acadêmicas.']].map(([r,t,d])=>`<a class="card rv" href="#${r}" style="text-decoration:none"><span class="k">Sala</span><h3>${t}</h3><p>${d}</p><span class="link-arrow">Entrar ${arrow}</span></a>`).join('')}
+  </div>
+</div></section>`;
+
+P.capoeira=()=>`
+${hero({eyebrow:'Sala 01 · Capoeira',title:'CAPOEIRA — O CORPO QUE CONTA UMA HISTÓRIA',sub:'Uma manifestação afro-brasileira em que movimento, música, estratégia e ancestralidade se encontram.',art:A.scene({seed:5})})}
+${subnav('capoeira',[['historia-c','História e origem'],['angola','Capoeira Angola'],['regional','Capoeira Regional'],['comparar','Angola × Regional'],['instrumentos-c','Instrumentos'],['movimentos','Movimentos'],['roda','A roda'],['patrimonio','Patrimônio']])}
+<section class="sec" id="historia-c"><div class="wrap split top-align">
+  <div class="stack">
+   ${head('4.2 · História e origem','Uma arte formada na diáspora')}
+   <div class="prose rv">
+    <p>Entre os séculos XVI e XIX, milhões de africanos foram trazidos à força ao Brasil. Não eram um povo só: vinham de sociedades da África Centro-Ocidental (como os povos de língua banto da região do Congo e de Angola), da África Ocidental (iorubás, fons, haussás e muitos outros) e de outras regiões, com línguas, religiões e práticas corporais diferentes.</p>
+    <p>No contexto colonial, sob a violência da escravidão, essas pessoas recriaram formas de convivência, festa e defesa. A capoeira se forma nesse processo, no Brasil, como prática afro-brasileira. Muitos pesquisadores destacam a contribuição de tradições centro-africanas, mas <span class="gold">não há uma única narrativa</span> que explique todos os detalhes de sua origem. A própria etimologia da palavra é discutida.</p>
+    <p>As cidades portuárias foram decisivas. No Rio de Janeiro, registros policiais das primeiras décadas do século XIX já citam prisões de escravizados "por capoeira". Em Salvador e no Recife, a prática também aparece ligada aos cais, mercados e festas. A capoeira circulava entre trabalhadores, escravizados, libertos e homens livres pobres, e se tornou também uma forma de afirmação diante da repressão.</p>
+    <p>Em 1835, o artista Johann Moritz Rugendas publicou a gravura "Jogar capoëra ou danse de la guerre", com dois homens em movimento ao som de um tambor, uma das imagens mais antigas da prática.</p>
+    <p>Depois da abolição (1888), o primeiro Código Penal da República, de 1890, transformou a capoeiragem em crime. A perseguição era também uma forma de controlar a população negra recém-liberta. A capoeira resistiu nas rodas de rua, nas festas de largo e na memória dos praticantes.</p>
+    <p>No século XX, a capoeira passou por grandes transformações: a criação de academias, a sistematização da Capoeira Regional por Mestre Bimba, a organização da Capoeira Angola em torno de Mestre Pastinha e de outros mestres, e o fim da criminalização explícita com o Código Penal de 1940. A partir dos anos 1970, mestres brasileiros levaram a capoeira a outros países, e hoje ela é praticada em todos os continentes.</p>
+   </div>
+   <p class="note rv"><span>⟡</span><span><b>Sobre as origens.</b> Este museu diferencia o que está documentado (leis, registros policiais, gravuras), o que é interpretação de pesquisadores e o que é tradição oral dos mestres. As três formas de conhecimento são valiosas, mas não são a mesma coisa.</span></p>
+  </div>
+  <aside class="sticky-col rv" aria-label="Marcos históricos da capoeira">
+   <p class="eyebrow" style="margin-bottom:20px">Marcos</p>
+   <ol class="rail">
+    ${[['Séc. XIX','Registros policiais do Rio de Janeiro citam prisões por capoeira.'],['1835','Gravura de Rugendas, "Jogar capoëra".'],['1890','Código Penal criminaliza a capoeiragem (art. 402).'],['Anos 1930','Mestre Bimba cria a Capoeira Regional.'],['1940','Novo Código Penal não reproduz o crime.'],['Anos 1940','Mestre Pastinha organiza o CECA.'],['2008','IPHAN registra a Roda e o Ofício dos Mestres.'],['2014','UNESCO inscreve a Roda de Capoeira.']].map(([y,t])=>`<li><span class="y">${y}</span><p>${t}</p></li>`).join('')}
+   </ol>
+   <a class="link-arrow" style="margin-top:24px" href="#linha-do-tempo">Linha do tempo completa ${arrow}</a>
+  </aside>
+</div></section>
+
+<section class="sec dark" id="angola"><div class="wrap split">
+  <div class="rv" style="aspect-ratio:1/1;max-width:100%;overflow:hidden">${A.scene({seed:15,ring:14,w:900,h:900,bg1:'#1f2b23'})}</div>
+  <div class="stack">
+   ${head('4.3 · Capoeira Angola','A tradição dos antigos mestres')}
+   <div class="prose rv">
+    <p>O nome "Capoeira Angola" passou a ser usado, sobretudo a partir dos anos 1930–1940, por mestres que queriam afirmar a continuidade com a capoeira praticada antes das mudanças do século XX e lembrar sua ligação com a África.</p>
+    <p>O ritmo costuma ser mais cadenciado, com bateria completa: três berimbaus, pandeiros, atabaque, agogô e reco-reco. A roda abre com a <span class="gold">ladainha</span>, canto solo, seguida da louvação e dos corridos.</p>
+    <p>O jogo tende a ser mais próximo do chão, com movimentos de grande controle, rodopios, chamadas e armadilhas. Mais do que força, valoriza-se a <span class="gold">estratégia</span>, a <span class="gold">malícia</span> e o diálogo corporal. Observar a roda é parte do aprendizado.</p>
+    <p><b>Mestre Pastinha</b> (Vicente Ferreira Pastinha, 1889–1981) tornou-se sua maior referência. Fundou o Centro Esportivo de Capoeira Angola, publicou o livro <i>Capoeira Angola</i> (1964) e defendeu a capoeira como arte e filosofia.</p>
+   </div>
+   <blockquote class="callout rv" style="margin:0">Na Capoeira Angola, o jogo envolve atenção, estratégia, expressividade e diálogo entre os participantes.</blockquote>
+  </div>
+</div></section>
+
+<section class="sec" id="regional"><div class="wrap split">
+  <div class="stack">
+   ${head('4.4 · Capoeira Regional','O método de Mestre Bimba')}
+   <div class="prose rv">
+    <p>Nos anos 1930, em Salvador, <b>Manoel dos Reis Machado, o Mestre Bimba</b> (1899/1900–1974), desenvolveu o que chamou de Luta Regional Baiana. Ele buscava uma capoeira mais eficiente e organizada, incorporando golpes e um método próprio.</p>
+    <p>Bimba criou as <span class="gold">sequências de ensino</span>, exercícios em dupla com golpes e defesas encadeados, além de rituais como o <span class="gold">batizado</span> e a formatura. Levou a capoeira para uma academia com regras, o que atraiu estudantes de outras classes sociais e contribuiu para a aceitação da prática num período de forte preconceito.</p>
+    <p>O jogo da Regional costuma ser mais em pé, com maior variedade de golpes, deslocamentos rápidos e balões (projeções ensinadas em sequência). A bateria tradicional de Bimba tinha <span class="gold">um berimbau e dois pandeiros</span>, com toques como São Bento Grande, Banguela, Iúna e Cavalaria.</p>
+    <p>A Angola e a Regional não são inimigas, nem categorias fechadas. Muitos grupos atuais praticam formas chamadas "contemporâneas", que misturam elementos das duas.</p>
+   </div>
+  </div>
+  <div class="rv diagram" style="background:var(--preto)"><svg viewBox="0 0 520 420" role="img" aria-label="Ilustração demonstrativa de uma sequência de ensino em dupla: golpe, esquiva e contra-ataque."><rect width="520" height="420" fill="${C.preto}"/>
+   ${[['1','Ataque','armada'],['2','Defesa','esquiva'],['3','Resposta','negativa']].map(([n,l,m],i)=>`<g transform="translate(${20+i*166} 40)"><g transform="scale(.46)">${movGlyph(m).replace(/^<svg[^>]*>|<\/svg>$/g,'')}</g><text x="74" y="150" text-anchor="middle" fill="${C.ouro}" font-family="Fraunces, serif" font-size="30" font-weight="800">${n}</text><text x="74" y="176" text-anchor="middle" fill="${C.bege}" font-size="14" font-family="Manrope, sans-serif">${l}</text></g>`).join('')}
+   <path d="M60 260 H460" stroke="${C.ouro}" stroke-dasharray="4 6"/><text x="260" y="300" text-anchor="middle" fill="${C.areia}" font-family="Manrope, sans-serif" font-size="15">Sequência de ensino: golpe, defesa e resposta em dupla</text><text x="260" y="326" text-anchor="middle" fill="${C.areia}" font-family="Manrope, sans-serif" font-size="13" opacity=".7">Ilustração demonstrativa, não reproduz uma sequência específica de Bimba</text></svg></div>
+</div></section>
+
+<section class="sec alt" id="comparar"><div class="wrap">
+  ${head('4.5 · Comparação','Angola e Regional')}
+  <div class="tbl-wrap rv"><table><thead><tr><th scope="col">Característica</th><th scope="col">Angola</th><th scope="col">Regional</th></tr></thead><tbody>
+   <tr><th scope="row">Contexto histórico</th><td>Tradição ligada às práticas antigas da capoeira</td><td>Sistematização desenvolvida por Mestre Bimba</td></tr>
+   <tr><th scope="row">Ritmo</th><td>Geralmente mais cadenciado</td><td>Pode apresentar ritmos mais acelerados</td></tr>
+   <tr><th scope="row">Jogo</th><td>Frequentemente próximo ao chão</td><td>Maior variedade de movimentos e sequências</td></tr>
+   <tr><th scope="row">Ensino</th><td>Transmissão tradicional e experiência na roda</td><td>Método sistematizado de ensino</td></tr>
+   <tr><th scope="row">Bateria</th><td>Três berimbaus, pandeiros, atabaque, agogô, reco-reco</td><td>Um berimbau e dois pandeiros (formação de Bimba)</td></tr>
+   <tr><th scope="row">Referência histórica</th><td>Mestre Pastinha</td><td>Mestre Bimba</td></tr>
+  </tbody></table></div>
+  <p class="note rv mt"><span>⟡</span><span>As práticas são diversas. Cada mestre, grupo e linhagem tem suas próprias formas. A tabela mostra tendências gerais e não deve ser lida como regras absolutas.</span></p>
+</div></section>
+
+<section class="sec dark" id="instrumentos-c"><div class="wrap">
+  ${head('4.6 · Instrumentos','A bateria da capoeira','Clique em um instrumento para ver detalhes de materiais, som e contexto.')}
+  <div class="grid g3">${['berimbau','pandeiro','atabaque','agogo','reco'].map(id=>instrCard(id)).join('')}
+   <a class="card rv" href="#instrumentos" style="text-decoration:none;justify-content:center"><span class="k">Museu</span><h3>Todos os instrumentos</h3><p>Veja os instrumentos das três manifestações lado a lado.</p><span class="link-arrow">Abrir sala ${arrow}</span></a></div>
+</div></section>
+
+<section class="sec" id="movimentos"><div class="wrap">
+  ${head('4.7 · Movimentos','O vocabulário do corpo','Os diagramas mostram a trajetória principal de cada movimento (linha pontilhada dourada). A capoeira não é só luta: cada movimento ganha sentido no diálogo com o outro, no ritmo e na roda.')}
+  <div class="grid g3">${MOVES.map(([k,n,d])=>`<article class="card mov rv">${movGlyph(k)}<h3>${n}</h3><p>${d}</p></article>`).join('')}</div>
+</div></section>
+
+<section class="sec alt" id="roda"><div class="wrap split top-align">
+  <div class="stack">
+   ${head('4.8 · A roda','O círculo onde tudo acontece')}
+   <ul class="list-dash rv">
+    <li><b>Organização.</b> Os participantes formam um círculo. A bateria ocupa um dos lados, e o berimbau principal (gunga) fica em geral ao centro dela.</li>
+    <li><b>A bateria.</b> Sustenta o ritmo e a energia da roda. A formação varia conforme o estilo e o grupo.</li>
+    <li><b>O berimbau.</b> Comanda: define o toque, autoriza a entrada e pode chamar os jogadores de volta ao pé do berimbau.</li>
+    <li><b>Cantigas.</b> Ladainhas, louvações, quadras e corridos. O solista canta e o coro responde, criando uma conversa musical.</li>
+    <li><b>Palmas.</b> Quem está na roda bate palmas no ritmo, participando do jogo mesmo sem jogar.</li>
+    <li><b>Entrada e saída.</b> Os jogadores se agacham ao pé do berimbau, cumprimentam-se e entram. A saída e a "compra" do jogo seguem regras de cada grupo.</li>
+    <li><b>Música e movimento.</b> O jogo responde ao toque e ao canto: muda o ritmo, muda o jogo.</li>
+    <li><b>Respeito.</b> Aos mais velhos, aos mestres, à tradição e ao parceiro de jogo.</li>
+   </ul>
+  </div>
+  <figure class="diagram rv" style="margin:0">${rodaSVG(false)}<figcaption class="muted" style="font-size:.82rem;padding-top:8px">Uma das organizações possíveis. A ordem dos instrumentos varia entre grupos.</figcaption></figure>
+</div></section>
+
+<section class="sec green" id="patrimonio"><div class="wrap">
+  ${head('4.9 · Patrimônio cultural','Do Código Penal à lista da UNESCO')}
+  <div class="facts rv"><div><b>1890</b><span>Capoeiragem vira crime no Código Penal</span></div><div><b>2008</b><span>IPHAN registra a Roda de Capoeira e o Ofício dos Mestres</span></div><div><b>2014</b><span>UNESCO inscreve a Roda como Patrimônio Imaterial da Humanidade</span></div></div>
+  <div class="prose rv mt"><p>Em 2008, o IPHAN inscreveu a <b>Roda de Capoeira</b> no Livro de Registro das Formas de Expressão e o <b>Ofício dos Mestres de Capoeira</b> no Livro dos Saberes. Em 2014, a UNESCO inscreveu a Roda de Capoeira na Lista Representativa do Patrimônio Cultural Imaterial da Humanidade.</p><p>Esses reconhecimentos não "congelam" a capoeira. Eles comprometem o Estado com ações de salvaguarda, como apoio aos mestres mais velhos, pesquisa, documentação e incentivo à transmissão. E simbolizam uma inversão histórica: a prática que já foi crime passou a ser reconhecida como patrimônio.</p></div>
+  ${sourceNote('IPHAN, Dossiê de registro da Roda de Capoeira e do Ofício dos Mestres (2007–2008); UNESCO, Lista Representativa (2014).')}
+</div></section>
+${nextRoom('capoeira')}`;
+
+P.ijexa=()=>`
+${hero({eyebrow:'Sala 02 · Ijexá',title:'IJEXÁ — O RITMO DA ANCESTRALIDADE',sub:'Uma expressão musical que conecta tradição, identidade, espiritualidade e cultura afro-brasileira.',art:A.scene({seed:6,motif:'cortejo',ring:0,bg1:'#1d2a24'})})}
+${subnav('ijexa',[['origem-i','Origem e história'],['oque','O que é o Ijexá'],['instrumentos-i','Instrumentos'],['afoxe','Afoxé e Ijexá'],['musica','Na música brasileira'],['importancia-i','Importância']])}
+<section class="sec" id="origem-i"><div class="wrap split top-align">
+  <div>${head('5.2 · Origem e história','De Ilexá às ruas de Salvador')}
+   <p class="note rv"><span>⟡</span><span><b>Distinção essencial.</b> <i>Ijexá</i> é um <b>ritmo</b>. <i>Afoxé</i> é uma <b>manifestação cultural</b> que usa esse ritmo. Os terreiros de candomblé de nação ijexá são <b>instituições religiosas</b>. São coisas relacionadas, mas diferentes.</span></p></div>
+  <div class="prose rv">
+   <p>O nome vem dos <span class="gold">Ijexá</span> (Ijesa), um subgrupo dos povos iorubás cujo centro histórico é a cidade de Ilexá (Ilesa), na atual Nigéria. Os iorubás foram um dos muitos povos trazidos à força ao Brasil, sobretudo para a Bahia, entre o fim do século XVIII e meados do XIX, e aqui eram frequentemente chamados de "nagôs".</p>
+   <p>No Brasil, tradições de diferentes povos se reorganizaram nos terreiros de candomblé, que se agruparam em "nações" (como ketu, jeje, angola e ijexá). Nesses espaços, o ijexá é também o nome de um <span class="gold">toque</span> tocado nos atabaques, associado em muitas casas a orixás como Oxum.</p>
+   <p>Quando os afoxés saíram às ruas no carnaval, levaram esse toque consigo. Assim o ijexá passou do espaço religioso para o cortejo público, sem perder sua ligação com a ancestralidade. Esse deslocamento é uma das grandes transformações culturais do ritmo no território brasileiro.</p>
+   <p>Na segunda metade do século XX, o ijexá entrou na música popular brasileira e se tornou um dos ritmos que mais identificam a música baiana.</p>
+  </div>
+</div></section>
+
+<section class="sec dark" id="oque"><div class="wrap">
+  ${head('5.3 · O que é o Ijexá?','Um ritmo que caminha','Em termos simples: é um ritmo cadenciado, de andamento moderado, feito para cantar e dançar caminhando. Em termos mais profundos: é uma forma de organizar o tempo coletivo, ligada a uma história religiosa e comunitária.')}
+  <div class="grid g3">
+   ${[['Ritmo','Uma célula rítmica guiada pelo agogô, sobre a qual os atabaques constroem o balanço. O andamento é moderado e constante.'],['Percussão','Agogô, atabaques, xequerês e afoxés se sobrepõem em camadas. Nenhum instrumento toca "sozinho": o ijexá é o diálogo entre eles.'],['Dança','Passos curtos, deslizados, com o tronco solto e os braços acompanhando. A dança se adapta ao cortejo em movimento.'],['Canto','Cantos em iorubá e em português, geralmente em forma de pergunta e resposta entre solista e coro.'],['Tradição','O toque tem raiz no candomblé. Por isso, seu uso pelos afoxés envolve preceitos e respeito.'],['Identidade','Tocar e dançar ijexá é afirmar a presença negra na cidade e na festa, especialmente no carnaval de Salvador.']].map(([t,d])=>`<div class="card rv"><span class="k">Ijexá</span><h3>${t}</h3><p>${d}</p></div>`).join('')}
+  </div>
+</div></section>
+
+<section class="sec" id="instrumentos-i"><div class="wrap">
+  ${head('5.4 · Instrumentos','A orquestra do afoxé','Instrumentos frequentemente encontrados em formações de afoxé. A combinação exata varia conforme o grupo; alguns incorporam outros instrumentos de percussão.')}
+  <div class="grid g4">${['agogo','atabaque','xequere','afoxe'].map(id=>instrCard(id)).join('')}</div>
+</div></section>
+
+<section class="sec alt" id="afoxe"><div class="wrap split top-align">
+  <div class="stack">${head('5.5 · Afoxé e Ijexá','O cortejo e o seu ritmo')}
+   <div class="rv" style="aspect-ratio:4/3;max-width:100%;overflow:hidden">${A.scene({seed:22,motif:'cortejo',ring:0,bg1:'#1d2a24',w:1000,h:750})}</div></div>
+  <div class="prose rv">
+   <p><b>O que são os afoxés.</b> Grupos culturais afro-brasileiros que desfilam em cortejo, sobretudo no carnaval, com ligação ao universo do candomblé. Por isso são muitas vezes chamados de "candomblé de rua". O termo é atribuído a uma palavra de origem iorubá.</p>
+   <p><b>História.</b> Pesquisadores apontam os clubes carnavalescos de temática africana do fim do século XIX em Salvador, como a Embaixada Africana e os Pândegos d'África, como precursores. Esses grupos sofreram proibições no início do século XX. Em 1949, estivadores do porto fundaram o <span class="gold">Filhos de Gandhy</span>, hoje um dos maiores símbolos do carnaval baiano. Nas décadas de 1970 e 1980 surgiram e ressurgiram muitos outros afoxés, em diálogo com o movimento negro.</p>
+   <p><b>Organização.</b> Antes de sair às ruas, muitos afoxés realizam ritos de preceito, como o padê para Exu. O grupo se organiza com diretoria, puxadores de canto, tocadores, dançarinos e associados. Roupas e cores costumam ter significado (o branco e o azul do Filhos de Gandhy são um exemplo conhecido).</p>
+   <p><b>Música.</b> O ijexá é o ritmo principal do repertório. Os cantos podem ser em iorubá, em português ou misturar as duas línguas.</p>
+   <p><b>Ancestralidade.</b> O cortejo leva às ruas valores, orixás e histórias da comunidade. É festa e também afirmação de memória.</p>
+   <blockquote class="callout" style="margin:0">O afoxé é uma manifestação cultural e musical. O ijexá é o ritmo que ocupa lugar central em seu repertório.</blockquote>
+  </div>
+</div></section>
+
+<section class="sec dark" id="musica"><div class="wrap">
+  ${head('5.6 · Na música brasileira','Do cortejo ao disco')}
+  <div class="grid g2">
+   <div class="card rv"><span class="k">Artista e afoxé</span><h3>Gilberto Gil e o Filhos de Gandhy</h3><p>Gil passou a desfilar no Filhos de Gandhy nos anos 1970 e contribuiu para a revitalização do afoxé, num momento em que o grupo tinha poucos integrantes. O ijexá aparece em diversas obras do artista.</p></div>
+   <div class="card rv"><span class="k">Canção</span><h3>"Ijexá (Filhos de Gandhi)", com Clara Nunes</h3><p>Composição de Edil Pacheco gravada por Clara Nunes no início dos anos 1980, que leva o nome do ritmo e homenageia o afoxé.</p></div>
+   <div class="card rv"><span class="k">Canção</span><h3>"É d'Oxum", de Gerônimo e Vevé Calazans</h3><p>Canção baiana em ritmo de ijexá que se tornou uma das mais conhecidas homenagens a Oxum e à cidade de Salvador.</p></div>
+   <div class="card rv"><span class="k">Contextos</span><h3>Festas, cortejos e repertórios</h3><p>O ijexá aparece em composições de inspiração afro-brasileira, em festas populares, nos cortejos tradicionais e nos repertórios de músicos e grupos da Bahia e de outros estados.</p></div>
+  </div>
+  <p class="muted rv" style="font-size:.85rem;margin-top:20px">Exemplos selecionados por serem amplamente documentados. Datas e créditos de gravação devem ser confirmados nos discos e nas bases de dados fonográficas.</p>
+</div></section>
+
+<section class="sec" id="importancia-i"><div class="wrap">
+  ${head('5.7 · Importância cultural e social','Por que o ijexá importa')}
+  <div class="grid g3">${[['Memória','Guarda, no som e nos cantos, referências a uma história africana e afro-baiana.'],['Continuidade','É ensinado de geração em geração, dentro dos afoxés e das famílias.'],['Identidade negra','Afirma a presença negra no espaço público e na festa.'],['Valorização','Mostra a sofisticação musical da cultura afro-brasileira.'],['Contra o apagamento','Sustenta tradições que foram proibidas e estigmatizadas.'],['Transmissão','Passa conhecimentos pela prática, pela escuta e pela convivência.']].map(([t,d])=>`<div class="card plain rv"><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
+</div></section>
+${nextRoom('ijexa')}`;
+
+P.maculele=()=>`
+${hero({eyebrow:'Sala 03 · Maculelê',title:'MACULELÊ — O RITMO QUE VIVE NA DANÇA',sub:'Uma manifestação cultural afro-brasileira que combina movimento, musicalidade, tradição e expressão coletiva.',art:A.scene({seed:7,motif:'bastoes',ring:12,bg1:C.terra})})}
+${subnav('maculele',[['historia-m','História e origem'],['caracteristicas','Características'],['bastoes','Bastões'],['instrumentos-m','Instrumentos'],['cantos','Cantos'],['vestimentas','Vestimentas'],['maculele-capoeira','Maculelê e capoeira']])}
+<section class="sec" id="historia-m"><div class="wrap split top-align">
+  <div class="stack">${head('6.2 · História e origem','Santo Amaro e as muitas narrativas')}
+   <div class="grid" style="gap:12px">
+    <div class="card rv"><div>${badge('doc')}</div><p>O Maculelê está ligado a Santo Amaro da Purificação, no Recôncavo Baiano, região marcada pelos engenhos de cana e pela grande presença de população negra.</p></div>
+    <div class="card rv"><div>${badge('oral')}</div><p>Na tradição oral contada em grupos, o Maculelê teria nascido da história de um jovem que defendeu sua comunidade com dois bastões. É uma narrativa simbólica, sem comprovação documental.</p></div>
+    <div class="card rv"><div>${badge('int')}</div><p>Pesquisadores discutem possíveis relações com danças de bastões africanas, com práticas dos canaviais e com influências indígenas. Não há consenso.</p></div>
+   </div></div>
+  <div class="prose rv">
+   <p>O Maculelê se desenvolveu na Bahia como manifestação afro-brasileira, apresentado em festas populares e religiosas de Santo Amaro, como as celebrações ligadas a Nossa Senhora da Purificação. Segundo a memória local, a prática chegou a quase desaparecer na primeira metade do século XX.</p>
+   <p>Nos anos 1940, <span class="gold">Paulino Aluísio de Andrade, o Mestre Popó</span>, reuniu familiares e vizinhos e reconstruiu o Maculelê a partir das lembranças de antigos praticantes, dos cantos e dos movimentos que ainda circulavam na cidade. Esse trabalho é um exemplo forte da <span class="gold">transmissão oral</span>: o conhecimento foi recuperado pela memória, não por documentos.</p>
+   <p>A partir de Santo Amaro, o Maculelê passou a ser apresentado em outras cidades e, especialmente a partir dos anos 1960 e 1970, foi incorporado por muitos grupos de capoeira, que o levaram a outros estados e países.</p>
+   <p>Hoje, mestres, famílias e grupos culturais de Santo Amaro e de outros lugares seguem cuidando dessa tradição, em apresentações, oficinas e festas.</p>
+   <p class="note"><span>⟡</span><span><b>Sobre a lenda.</b> Apresentamos a narrativa do guerreiro porque ela faz parte da cultura do Maculelê. Mas ela é tradição oral, não fato histórico comprovado.</span></p>
+  </div>
+</div></section>
+
+<section class="sec dark" id="caracteristicas"><div class="wrap">
+  ${head('6.3 · Características','Muitos corpos, um só ritmo')}
+  <div class="grid g4">${[['Dança coletiva','Os participantes dançam em roda ou em fileiras, nunca sozinhos.'],['Movimentos coordenados','Giros, saltos e agachamentos acontecem em sincronia.'],['Bastões','Cada dançarino leva dois bastões, batidos entre si e nos do parceiro.'],['Marcação rítmica','As batidas dos bastões são parte da música.'],['Coreografias','Há sequências ensaiadas, que variam de grupo para grupo.'],['Musicalidade','Atabaque, cantos e bastões formam a trilha da apresentação.'],['Expressão corporal','A dança tem força, mas também precisão e controle.'],['Participação coletiva','O coro e as palmas envolvem todos que estão presentes.']].map(([t,d])=>`<div class="card rv"><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
+  <div class="grid g3 mt">${[31,32,33].map(s=>`<div class="rv" style="aspect-ratio:4/3;max-width:100%;overflow:hidden">${A.scene({seed:s,motif:'bastoes',ring:10,bg1:s%2?C.terra:'#3a2a1d',w:800,h:600})}</div>`).join('')}</div>
+</div></section>
+
+<section class="sec" id="bastoes"><div class="wrap split">
+  <div class="rv" style="max-width:340px;justify-self:center;width:100%">${A.bastoes()}</div>
+  <div class="stack">${head('6.4 · Os bastões','Grimas: instrumento e movimento')}
+   <ul class="list-dash rv">
+    <li><b>Significado cultural.</b> Os bastões, também chamados de grimas, são o símbolo do Maculelê e remetem às narrativas de luta e defesa da comunidade.</li>
+    <li><b>Relação com os movimentos.</b> Cada giro e cada agachamento termina numa batida. O bastão prolonga o braço e desenha o movimento.</li>
+    <li><b>Marcação musical.</b> As batidas acompanham o atabaque, funcionando como mais um instrumento de percussão.</li>
+    <li><b>Coordenação.</b> Os pares batem seus bastões uns nos outros no tempo exato. Errar o tempo é romper a sintonia do grupo.</li>
+    <li><b>Coreografia.</b> A organização das batidas e das trocas de lugar dá forma à apresentação.</li>
+   </ul>
+   <p class="muted rv" style="font-size:.9rem">Em algumas apresentações aparecem facões no lugar dos bastões. Seu uso exige preparo e segurança, e não é a forma mais comum em escolas e oficinas.</p>
+  </div>
+</div></section>
+
+<section class="sec alt" id="instrumentos-m"><div class="wrap">
+  ${head('6.5 · Instrumentos','Atabaque, pandeiro e agogô','Os atabaques costumam conduzir o Maculelê. Pandeiro e agogô aparecem em muitas formações, e os próprios bastões completam a percussão.')}
+  <div class="grid g3">${['atabaque','pandeiro','agogo'].map(id=>instrCard(id)).join('')}</div>
+</div></section>
+
+<section class="sec dark" id="cantos"><div class="wrap split top-align">
+  <div>${head('6.6 · Cantos e musicalidade','A voz que conduz a dança')}</div>
+  <div class="prose rv">
+   <p><b>Participação coletiva.</b> Um solista puxa o canto e o grupo responde. Todos cantam, inclusive quem está dançando.</p>
+   <p><b>Música e dança.</b> O canto indica o momento de começar, mudar de figura ou encerrar. A dança é uma resposta ao canto e ao atabaque.</p>
+   <p><b>Marcação rítmica.</b> Atabaque e bastões mantêm o pulso; o canto se encaixa nele.</p>
+   <p><b>Comunicação.</b> Pelos cantos, o mestre ou puxador conversa com o grupo durante a apresentação.</p>
+   <p><b>Repertório tradicional.</b> Muitas cantigas foram preservadas pela memória dos mais velhos de Santo Amaro e são repassadas oralmente. Algumas misturam português e palavras de origem africana.</p>
+  </div>
+</div></section>
+
+<section class="sec" id="vestimentas"><div class="wrap split top-align">
+  <div>${head('6.7 · Vestimentas','Não há um uniforme universal')}</div>
+  <div class="stack rv">
+   <p class="lead">Cada grupo define suas roupas. Alguns exemplos que aparecem com frequência:</p>
+   <ul class="list-dash"><li>Calças largas, muitas vezes brancas ou de tecido cru, com o tronco à mostra ou camiseta.</li><li>Saias de palha ou de tecido sobre a calça, usadas por alguns grupos.</li><li>Pinturas corporais e adereços inspirados em referências africanas ou locais.</li><li>Pés descalços, para firmeza e contato com o chão.</li></ul>
+   <p class="note"><span>⟡</span><span>Não existe um padrão único para todas as apresentações de Maculelê. Variação não é erro: é sinal de que a tradição está viva em comunidades diferentes.</span></p>
+  </div>
+</div></section>
+
+<section class="sec green" id="maculele-capoeira"><div class="wrap">
+  ${head('6.8 · Maculelê e capoeira','Vizinhos, não iguais')}
+  <div class="tbl-wrap rv" style="background:transparent;border-color:#3d5a4a"><table><thead><tr><th scope="col">Aspecto</th><th scope="col">Capoeira</th><th scope="col">Maculelê</th></tr></thead><tbody style="color:var(--dk-ink)">
+   <tr><th scope="row" style="color:var(--ouro)">Aproximação</th><td colspan="2">Muitos grupos de capoeira ensinam e apresentam Maculelê, especialmente desde os anos 1960–1970.</td></tr>
+   <tr><th scope="row" style="color:var(--ouro)">Apresentações</th><td colspan="2">É comum que as duas apareçam no mesmo espetáculo ou evento, junto de samba de roda e puxada de rede.</td></tr>
+   <tr><th scope="row" style="color:var(--ouro)">Instrumentos</th><td>Berimbau no comando, com pandeiro, atabaque e outros</td><td>Atabaque no comando, bastões como percussão</td></tr>
+   <tr><th scope="row" style="color:var(--ouro)">Movimentos</th><td>Jogo improvisado entre dois</td><td>Dança coletiva, em grande parte coreografada</td></tr>
+   <tr><th scope="row" style="color:var(--ouro)">Organização</th><td>Roda com dois jogadores ao centro</td><td>Roda ou fileiras com todos dançando</td></tr>
+  </tbody></table></div>
+  <p class="lead rv mt" style="color:var(--dk-muted)">Conviver no mesmo grupo não apaga as diferenças. Preservar a identidade própria do Maculelê, com sua história santo-amarense, é parte do respeito às duas tradições.</p>
+</div></section>
+${nextRoom('maculele')}`;
+
+P.historia=()=>`
+${hero({eyebrow:'Sala 04 · História e ancestralidade',title:'AS RAÍZES DE UMA CULTURA QUE TRANSFORMOU O BRASIL',sub:'O contexto histórico que liga capoeira, ijexá e Maculelê à presença africana no Brasil.',art:A.scene({seed:9,ring:24,bg1:'#2e2218'})})}
+${subnav('historia',[['presenca','Presença africana'],['resistencia','Resistência cultural'],['transmissao','Transmissão'],['hoje','Na atualidade'],['preconceito','Combate ao preconceito']])}
+<section class="sec" id="presenca"><div class="wrap split top-align">
+  <div>${head('7.1 · Presença africana no Brasil','Muitos povos, não um só')}
+   <div class="facts rv" style="background:var(--dk-bg);color:var(--dk-ink)"><div><b>~4,8 mi</b><span>pessoas desembarcadas no Brasil (estimativa Slave Voyages)</span></div><div><b>3 séc.</b><span>de tráfico transatlântico</span></div><div><b>1888</b><span>abolição formal</span></div></div></div>
+  <div class="prose rv">
+   <p>O tráfico transatlântico de africanos escravizados foi um dos maiores crimes da história. O Brasil foi o destino que mais recebeu pessoas escravizadas nas Américas e o último país do continente a abolir a escravidão, em 1888.</p>
+   <p>As pessoas trazidas à força pertenciam a povos muito diversos. Da África Centro-Ocidental vieram falantes de línguas banto, como os povos da região do Congo e de Angola. Da África Ocidental vieram iorubás (chamados aqui de nagôs), fons e ewes (jejes), haussás, entre muitos outros. Cada povo tinha línguas, religiões, formas de organização e expressões artísticas próprias.</p>
+   <p>No Brasil, essas pessoas formaram comunidades: nos quilombos, nas irmandades religiosas, nos terreiros, nas senzalas, nos bairros urbanos e nos cantos de trabalho. Dessas comunidades vieram contribuições decisivas para a língua, a religiosidade, a música, a dança, a culinária, a medicina popular e as técnicas de trabalho do país.</p>
+   <p class="note"><span>⟡</span><span>Falar em "cultura africana" no singular apaga essa diversidade. Este museu procura sempre nomear de que povos e regiões se está falando.</span></p>
+  </div>
+</div></section>
+<section class="sec dark" id="resistencia"><div class="wrap split top-align">
+  <div>${head('7.2 · Resistência cultural','Manter-se quem se é')}</div>
+  <div class="prose rv"><p>Resistir não foi apenas fugir ou lutar. Foi também cantar na língua dos antepassados, cultuar os orixás, inquices e voduns, reunir-se para festejar, ensinar os filhos, jogar capoeira na roda e dançar no terreiro.</p><p>Essas práticas preservaram identidades sob a escravidão e, depois da abolição, sob a perseguição policial, a criminalização da capoeira, a repressão aos terreiros e aos clubes africanos do carnaval. Muitas manifestações sobreviveram adaptando-se: mudando de forma, de lugar ou de nome, sem perder seu núcleo.</p></div>
+</div></section>
+<section class="sec" id="transmissao"><div class="wrap">
+  ${head('7.3 · Transmissão de conhecimento','Quem ensina, quem aprende')}
+  <div class="grid g4">${[['Mestres','Reconhecidos pela comunidade, guardam e ensinam os fundamentos. O título vem do reconhecimento, não de um diploma.'],['Comunidades','Bairros, cidades e terreiros onde a prática acontece e ganha sentido.'],['Famílias','Muitas tradições, como o Maculelê de Santo Amaro, passaram de pais para filhos.'],['Grupos tradicionais','Academias, afoxés e associações culturais que organizam o ensino e as apresentações.']].map(([t,d])=>`<div class="card rv"><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
+  <p class="lead rv mt" style="max-width:68ch">Nessas tradições a <span class="gold">oralidade</span> é central: aprende-se ouvindo, observando, repetindo e convivendo. Por isso a perda de um mestre mais velho é também a perda de uma biblioteca viva.</p>
+</div></section>
+<section class="sec alt" id="hoje"><div class="wrap">
+  ${head('7.4 · Na atualidade','Presentes em toda parte')}
+  <div class="grid g4">${[['Escolas','Com apoio da Lei nº 10.639/2003, a cultura afro-brasileira faz parte do currículo.'],['Universidades','Pesquisas, grupos de extensão e projetos de documentação.'],['Projetos sociais','Capoeira e percussão como ferramentas de educação e cidadania.'],['Grupos culturais','Academias, afoxés e grupos de Maculelê em todo o país.'],['Festivais','Encontros, batizados, festas de largo e carnaval.'],['Comunidades','Rodas de rua, terreiros e festas de bairro.'],['No mundo','Capoeira praticada em mais de uma centena de países.'],['Mídia e arte','Música, cinema, literatura e artes visuais.']].map(([t,d])=>`<div class="card plain rv"><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
+</div></section>
+<section class="sec green" id="preconceito"><div class="wrap">
+  ${head('7.5 · Combate ao preconceito','Conhecer para respeitar')}
+  <div class="grid g3">
+   ${[['Racismo','Discriminação baseada na cor e na origem. No Brasil, o racismo é crime inafiançável e imprescritível (Constituição, art. 5º, XLII; Lei nº 7.716/1989).'],['Intolerância religiosa','Religiões de matriz africana, como o candomblé e a umbanda, ainda são alvo de ataques. A liberdade religiosa é garantida pela Constituição.'],['Preconceito cultural','Tratar manifestações afro-brasileiras como "folclore menor" ou como algo exótico desvaloriza saberes complexos.'],['Desvalorização','Mestres populares muitas vezes vivem sem reconhecimento ou renda. Valorizar é também remunerar e dar voz.'],['Educação antirracista','Ensinar a história e a cultura afro-brasileira com profundidade, ouvindo as próprias comunidades.'],['O que fazer','Aprender, citar as fontes, respeitar os preceitos, apoiar grupos e denunciar a discriminação.']].map(([t,d])=>`<div class="card rv" style="background:rgba(0,0,0,.18);border-color:#3d5a4a"><h3>${t}</h3><p style="color:var(--dk-muted)">${d}</p></div>`).join('')}
+  </div>
+</div></section>
+${nextRoom('historia')}`;
+
+P.instrumentos=()=>`
+${hero({eyebrow:'Sala 05 · Museu dos instrumentos',title:'O SOM QUE ORGANIZA A TRADIÇÃO',sub:'Sete instrumentos das três manifestações. Clique em cada peça para abrir sua ficha completa.',art:`<div style="width:100%;height:100%;display:grid;grid-template-columns:repeat(4,1fr);opacity:.3;background:${C.preto}">${Object.keys(INSTR_ART).concat(['berimbau']).map(k=>`<div style="display:grid;place-items:center;padding:6%">${INSTR_ART[k]()}</div>`).join('')}</div>`})}
+<section class="sec dark"><div class="wrap">
+  <div class="filters" role="group" aria-label="Filtrar instrumentos por manifestação">${['Todas',...INSTR_GROUPS.map(g=>g[0])].map((c,i)=>`<button aria-pressed="${i===0}" data-ifilter="${c}">${c}</button>`).join('')}</div>
+  ${INSTR_GROUPS.map(([g,ids])=>`<div class="igroup" data-group="${g}" style="margin-bottom:56px"><h2 class="rv" style="margin-bottom:24px">${g}</h2><div class="grid g4">${ids.map(id=>instrCard(id)).join('')}</div></div>`).join('')}
+  <p class="muted" style="font-size:.88rem">Alguns instrumentos aparecem em mais de uma manifestação. A ficha de cada peça indica onde ela é usada.</p>
+</div></section>
+${nextRoom('instrumentos')}`;
+
+P['linha-do-tempo']=()=>`
+${hero({eyebrow:'Sala 06 · Linha do tempo',title:'SÉCULOS DE MEMÓRIA',sub:'Acontecimentos documentados, interpretações históricas e tradições orais, cada um identificado pelo seu tipo e pela fonte.',art:A.scene({seed:17,ring:16,bg1:'#2e2218'})})}
+<section class="sec"><div class="wrap">
+  <div class="filters" role="group" aria-label="Filtrar linha do tempo">${[['todos','Todos'],['historia','História afro-brasileira'],['capoeira','Capoeira'],['ijexa','Ijexá e afoxés'],['maculele','Maculelê']].map(([k,l],i)=>`<button aria-pressed="${i===0}" data-tfilter="${k}">${l}</button>`).join('')}</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px">${Object.keys(TAGS).map(badge).join('')}</div>
+  <div class="tl" id="tl"><span class="fill" id="tlFill"></span>
+   ${TIMELINE.map(e=>`<div class="tl-item rv" data-cat="${e.cat}"><span class="dot" aria-hidden="true"></span><article class="tl-card">${miniIll(e.ill)}<span class="when">${e.w}</span><h3>${e.t}</h3><div class="tl-tags">${badge(e.tag)}</div><p class="muted">${e.d}</p><p class="src"><b>Fonte:</b> ${e.s}</p></article></div>`).join('')}
+  </div>
+  <p class="note mt"><span>⟡</span><span>Quando a data exata não é documentada de forma confiável, a linha do tempo indica a década ou o período, em vez de inventar um ano.</span></p>
+</div></section>
+${nextRoom('linha-do-tempo')}`;
+
+P.galeria=()=>`
+${hero({eyebrow:'Sala 07 · Galeria cultural',title:'GALERIA DE PRANCHAS',sub:'Composições ilustradas criadas para este museu. Clique para ampliar e navegue com as setas.',art:A.scene({seed:19,ring:18,bg1:'#1f2b23'})})}
+<section class="sec dark"><div class="wrap">
+  <div class="filters" role="group" aria-label="Filtrar galeria por categoria">${GAL_CATS.map((c,i)=>`<button aria-pressed="${i===0}" data-gfilter="${c}">${c}</button>`).join('')}</div>
+  <div class="gal" id="gal">${GALLERY.map((g,i)=>`<figure class="rv" data-cat="${g.cat}"><button data-gal="${i}" aria-label="Ampliar: ${esc(g.t)}">${g.art()}</button><figcaption><span>${g.cat}</span><b>${g.t}</b><small class="muted">${g.c}</small></figcaption></figure>`).join('')}</div>
+  <p class="note mt" style="color:var(--dk-muted)"><span>⟡</span><span><b>Sobre as imagens.</b> Esta galeria usa ilustrações vetoriais originais, e não fotografias, para não atribuir a pessoas, grupos ou mestres imagens que não sejam deles. Para retratos e registros reais, consulte os acervos indicados na sala de <a href="#referencias" style="color:var(--ouro)">Referências</a>.</span></p>
+</div></section>
+${nextRoom('galeria')}`;
+
+P.curiosidades=()=>`
+${hero({eyebrow:'Sala 08 · Descobrir',title:'VOCÊ SABIA?',sub:'Curiosidades, um quiz com 17 perguntas, o glossário cultural e uma área para explorar as tradições.',art:A.scene({seed:23,ring:14,bg1:'#3a2a1d'})})}
+${subnav('curiosidades',[['sabia','Você sabia?'],['quiz','Quiz cultural'],['glossario','Glossário'],['explore','Explore as tradições']])}
+<section class="sec" id="sabia"><div class="wrap">
+  ${head('11.1 · Você sabia?','Perguntas que abrem caminhos','Clique em uma pergunta para ler a explicação completa.')}
+  <div class="grid g2">${CURIOS.map(([k,q,a])=>`<details class="cur rv"><summary><div><span class="q-k">${k}</span><h3>${q}</h3></div><span class="plus" aria-hidden="true">+</span></summary><div class="ans"><p>${a}</p></div></details>`).join('')}</div>
+</div></section>
+<section class="sec dark" id="quiz"><div class="wrap">
+  ${head('11.2 · Quiz cultural','Teste o que você aprendeu','17 perguntas sobre Capoeira, Ijexá, Maculelê e história afro-brasileira, todas baseadas no conteúdo do museu.')}
+  <div class="quiz" id="quizBox" aria-live="polite"></div>
+</div></section>
+<section class="sec" id="glossario"><div class="wrap">
+  ${head('11.3 · Glossário cultural','Palavras da tradição')}
+  <label class="search" for="glossQ"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="sr">Pesquisar no glossário</span><input id="glossQ" type="search" placeholder="Pesquise um termo: ginga, afoxé, oralidade…" autocomplete="off"></label>
+  <p class="muted" id="glossCount" style="margin:-16px 0 16px;font-size:.85rem" aria-live="polite"></p>
+  <dl class="gl" id="glossList"></dl>
+</div></section>
+<section class="sec dark" id="explore"><div class="wrap">
+  ${head('11.4 · Explore as tradições','Escolha uma manifestação')}
+  <div class="tabs" role="tablist" aria-label="Manifestações">${[['capoeira','Capoeira'],['ijexa','Ijexá'],['maculele','Maculelê']].map(([k,l],i)=>`<button role="tab" id="tab-${k}" aria-controls="panel-explore" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-explore="${k}">${l}</button>`).join('')}</div>
+  <div class="ex-panel" id="panel-explore" role="tabpanel" aria-labelledby="tab-capoeira"></div>
+</div></section>
+${nextRoom('curiosidades')}`;
+
+const EXPLORE={
+ capoeira:{h:'Formada por africanos e afrodescendentes no Brasil colonial, perseguida como crime em 1890 e reconhecida como patrimônio em 2008 e 2014.',i:'Berimbau, pandeiro, atabaque, agogô, reco-reco.',m:'Ginga, aú, negativa, meia-lua de compasso, rasteira.',c:'Jogo entre dois na roda; diálogo corporal guiado pelo berimbau; estilos Angola e Regional.',p:'Símbolo da resistência negra e patrimônio da humanidade, praticada no mundo inteiro.',link:'capoeira'},
+ ijexa:{h:'Ritmo ligado aos Ijexá iorubás, tocado nos candomblés e levado às ruas pelos afoxés.',i:'Agogô, atabaques, xequerê, afoxé.',m:'Dança de passos curtos e deslizados, feita para o cortejo em movimento.',c:'Andamento moderado; linha-guia do agogô; cantos em iorubá e português.',p:'Afirma a presença negra no carnaval de Salvador e marcou a música popular brasileira.',link:'ijexa'},
+ maculele:{h:'Associado a Santo Amaro da Purificação, recuperado por Mestre Popó nos anos 1940; origem com várias narrativas.',i:'Atabaque, pandeiro, agogô e os próprios bastões.',m:'Giros, saltos e batidas de bastões em sincronia.',c:'Dança coletiva, coreografada, com cantos de pergunta e resposta.',p:'Exemplo de tradição salva pela memória oral de uma comunidade.',link:'maculele'}
+};
+
+P.comparacao=()=>`
+${hero({eyebrow:'Sala 09 · Comparação',title:'TRÊS EXPRESSÕES, MUITAS RELAÇÕES',sub:'O que aproxima e o que distingue Capoeira, Ijexá e Maculelê.',art:A.scene({seed:27,ring:18,bg1:'#1f2b23'})})}
+<section class="sec"><div class="wrap">
+  ${head('12 · Tabela comparativa','Lado a lado')}
+  <div class="tbl-wrap rv"><table><thead><tr><th scope="col">Aspecto</th><th scope="col">Capoeira</th><th scope="col">Ijexá</th><th scope="col">Maculelê</th></tr></thead><tbody>
+   <tr><th scope="row">O que é</th><td>Manifestação (jogo/arte)</td><td>Ritmo musical</td><td>Manifestação (dança)</td></tr>
+   <tr><th scope="row">Expressão principal</th><td>Jogo, luta, dança e música</td><td>Ritmo, música e dança</td><td>Dança e expressão corporal</td></tr>
+   <tr><th scope="row">Elemento marcante</th><td>Ginga e roda</td><td>Cadência musical</td><td>Bastões</td></tr>
+   <tr><th scope="row">Instrumentos</th><td>Berimbau e percussão</td><td>Agogô, atabaques e xequerê</td><td>Atabaque e percussão</td></tr>
+   <tr><th scope="row">Contexto cultural</th><td>Afro-brasileiro</td><td>Afro-brasileiro, com raízes iorubás</td><td>Afro-brasileiro</td></tr>
+   <tr><th scope="row">Onde se destaca</th><td>Todo o Brasil e o mundo</td><td>Bahia, nos afoxés e terreiros</td><td>Santo Amaro (BA) e grupos de capoeira</td></tr>
+   <tr><th scope="row">Participação</th><td>Individual dentro de uma roda coletiva</td><td>Musical e coletiva</td><td>Coletiva e coreográfica</td></tr>
+   <tr><th scope="row">Característica</th><td>Diálogo corporal</td><td>Organização rítmica</td><td>Sincronização dos movimentos</td></tr>
+   <tr><th scope="row">Reconhecimento</th><td>IPHAN (2008) e UNESCO (2014)</td><td>Presente em afoxés reconhecidos localmente</td><td>Valorizado por grupos e comunidades</td></tr>
+  </tbody></table></div>
+  <div class="split top-align mt">
+   <div class="prose rv"><h3>Diferenças</h3><p>A capoeira é um jogo entre dois, improvisado e guiado pelo berimbau. O Maculelê é uma dança coletiva, em grande parte coreografada, guiada pelo atabaque e marcada pelos bastões. O ijexá não é uma manifestação do mesmo tipo: é um ritmo, que ganha vida nos afoxés e nos terreiros.</p></div>
+   <div class="prose rv"><h3>Relações</h3><p>As três têm raízes na diáspora africana e se fortaleceram na Bahia. Compartilham instrumentos (atabaque, agogô, pandeiro), o canto de pergunta e resposta e o papel central dos mestres e da oralidade. Capoeira e Maculelê convivem em muitos grupos, mas cada uma mantém sua identidade.</p></div>
+  </div>
+</div></section>
+${nextRoom('comparacao')}`;
+
+P.preservacao=()=>`
+${hero({eyebrow:'Sala 10 · Preservação cultural',title:'QUANDO UMA TRADIÇÃO CONTINUA VIVA, A HISTÓRIA NÃO SE PERDE.',sub:'Preservar não é guardar numa vitrine. É garantir que mestres ensinem, que jovens aprendam e que comunidades sejam respeitadas.',art:A.scene({seed:29,ring:26,bg1:'#2e2218'})})}
+<section class="sec"><div class="wrap">
+  <div class="grid g2" style="gap:0">
+   <div class="rv" style="aspect-ratio:1/1;max-width:100%;overflow:hidden;background:var(--preto)"><svg viewBox="0 0 600 600" role="img" aria-label="Ilustração de três gerações em roda: figuras grandes, médias e pequenas ao redor de um berimbau."><rect width="600" height="600" fill="${C.verde}"/>${[0,1,2].map(r=>{const rad=90+r*80,n=6+r*4,sz=[1.3,1,.7][r];let s='';for(let i=0;i<n;i++){const a=i/n*Math.PI*2;const x=300+Math.cos(a)*rad,y=300+Math.sin(a)*rad;s+=`<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) scale(${sz})"><circle cy="-22" r="9" fill="${C.areia}"/><path d="M-12 14 Q-12 -10 0 -12 Q12 -10 12 14Z" fill="${r===0?C.ouro:r===1?C.areia:C.bege}" opacity=".9"/></g>`}return s}).join('')}<g transform="translate(250 230) scale(.5)">${A.berimbau().replace(/^<svg[^>]*>|<\/svg>$/g,'')}</g><text x="300" y="575" text-anchor="middle" fill="${C.bege}" font-family="Manrope, sans-serif" font-size="14" letter-spacing="3">MESTRES · ADULTOS · CRIANÇAS</text></svg></div>
+   <div class="rv" style="background:var(--dk-bg);color:var(--dk-ink);padding:clamp(28px,5vw,56px);display:grid;gap:18px;align-content:center"><p class="eyebrow">Gerações</p><h2>Do mais velho ao mais novo</h2><p style="color:var(--dk-muted)">Na roda, no cortejo e na dança, convivem mestres, adultos e crianças. Essa convivência é a forma mais antiga e mais eficiente de preservação.</p></div>
+  </div>
+  <div class="grid g3 mt">${[['Preservar os conhecimentos','Documentar, gravar e estudar, sempre com autorização e participação das comunidades.'],['Valorizar os mestres','Reconhecer, remunerar e ouvir quem guarda os fundamentos.'],['Apoiar grupos culturais','Frequentar, divulgar, contribuir com academias, afoxés e grupos.'],['Promover a educação','Levar essas manifestações para escolas, com conteúdo correto e aprofundado.'],['Combater o racismo','Enfrentar a discriminação contra pessoas e práticas negras.'],['Respeitar as religiões','Reconhecer a dimensão sagrada de muitas tradições e seus preceitos.'],['Reconhecer a contribuição africana','Lembrar que o Brasil foi construído também por saberes africanos.']].map(([t,d],i)=>`<div class="card rv"><span class="k">Compromisso ${i+1} de 7</span><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
+</div></section>
+${nextRoom('preservacao')}`;
+
+P.sobre=()=>`
+${hero({eyebrow:'Sala 11 · Sobre o projeto',title:'SOBRE O RAÍZES',sub:'Um museu digital educativo dedicado à Capoeira, ao Ijexá e ao Maculelê.',art:A.scene({seed:33,ring:12,bg1:'#1f2b23'})})}
+<section class="sec"><div class="wrap split top-align">
+  <div>${head('Propósito','Por que este museu existe')}</div>
+  <div class="prose rv">
+   <p>O Raízes apresenta três manifestações da cultura afro-brasileira com profundidade, cuidado histórico e respeito às comunidades que as mantêm vivas. O objetivo é educativo: servir a estudantes, professores e qualquer pessoa curiosa.</p>
+   <h3>Critérios de conteúdo</h3>
+   <ul class="list-dash"><li>Diferenciar fatos documentados, interpretações históricas e tradições orais.</li><li>Não apresentar lendas como fatos.</li><li>Não tratar "a África" como uma cultura única.</li><li>Distinguir ijexá (ritmo) de afoxé (manifestação), e capoeira de Maculelê.</li><li>Não inventar datas, citações ou referências.</li></ul>
+   <h3>Sobre as imagens</h3>
+   <p>Todas as imagens deste site são ilustrações vetoriais originais, desenhadas em código para o projeto. Optamos por não usar fotografias geradas ou de origem incerta, que poderiam representar de forma errada instrumentos, pessoas e manifestações. Os retratos de mestres foram substituídos por pranchas tipográficas. Para fotografias reais, recomendamos os acervos do IPHAN, da Fundação Cultural Palmares e de museus e grupos culturais, sempre respeitando os direitos de uso e de imagem.</p>
+   <h3>Acessibilidade</h3>
+   <p>O site pode ser navegado por teclado, respeita a configuração de redução de movimento do dispositivo e funciona em tema claro ou escuro.</p>
+   <p class="muted">Desenvolvido em 2026.</p>
+  </div>
+</div></section>
+${nextRoom('sobre')}`;
+
+const REFS={
+ 'Instituições':[
+  ['IPHAN — Instituto do Patrimônio Histórico e Artístico Nacional. Roda de Capoeira e Ofício dos Mestres de Capoeira (bens registrados).','https://portal.iphan.gov.br/'],
+  ['UNESCO. Capoeira circle. Representative List of the Intangible Cultural Heritage of Humanity, 2014.','https://ich.unesco.org/en/RL/capoeira-circle-00892'],
+  ['Fundação Cultural Palmares.','https://www.gov.br/palmares/'],
+  ['Ministério da Cultura.','https://www.gov.br/cultura/'],
+  ['Slave Voyages — Trans-Atlantic Slave Trade Database (Emory University e parceiros).','https://www.slavevoyages.org/']
+ ],
+ 'Legislação':[
+  ['BRASIL. Decreto nº 847, de 11 de outubro de 1890 (Código Penal), arts. 402–404.','https://www.planalto.gov.br/ccivil_03/decreto/1851-1899/d847.htm'],
+  ['BRASIL. Lei nº 3.353, de 13 de maio de 1888 (Lei Áurea).','https://www.planalto.gov.br/ccivil_03/leis/lim/lim3353.htm'],
+  ['BRASIL. Constituição da República Federativa do Brasil de 1988, arts. 215 e 216.','https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm'],
+  ['BRASIL. Lei nº 10.639, de 9 de janeiro de 2003.','https://www.planalto.gov.br/ccivil_03/leis/2003/l10.639.htm']
+ ],
+ 'Livros e pesquisas':[
+  ['ASSUNÇÃO, Matthias Röhrig. Capoeira: The History of an Afro-Brazilian Martial Art. London: Routledge, 2005.'],
+  ['SOARES, Carlos Eugênio Líbano. A capoeira escrava e outras tradições rebeldes no Rio de Janeiro (1808–1850). Campinas: Editora da Unicamp, 2001.'],
+  ['REGO, Waldeloir. Capoeira Angola: ensaio sócio-etnográfico. Salvador: Itapuã, 1968.'],
+  ['PASTINHA, Vicente Ferreira. Capoeira Angola. Salvador, 1964.'],
+  ['ABREU, Frederico José de. Bimba é bamba: a capoeira no ringue. Salvador: Instituto Jair Moura, 1999.'],
+  ['SODRÉ, Muniz. Mestre Bimba: corpo de mandinga. Rio de Janeiro: Manati, 2002.'],
+  ['REIS, Letícia Vidor de Sousa. O mundo de pernas para o ar: a capoeira no Brasil. São Paulo: Publisher Brasil, 1997.'],
+  ['RISÉRIO, Antonio. Carnaval Ijexá. Salvador: Corrupio, 1981.'],
+  ['LOPES, Nei. Enciclopédia brasileira da diáspora africana. São Paulo: Selo Negro, 2004.'],
+  ['RUGENDAS, Johann Moritz. Voyage pittoresque dans le Brésil. Paris: Engelmann, 1835.']
+ ]
+};
+P.referencias=()=>`
+${hero({eyebrow:'Sala 12 · Referências',title:'FONTES E REFERÊNCIAS',sub:'Instituições, legislação e pesquisas que fundamentam o conteúdo do museu.',art:A.scene({seed:35,ring:10,bg1:'#2e2218'})})}
+<section class="sec"><div class="wrap">
+  <div class="grid" style="gap:56px">${Object.entries(REFS).map(([g,list])=>`<div class="rv"><h2 style="margin-bottom:12px">${g}</h2><ol class="refs">${list.map(([t,u])=>`<li><span>${t}${u?`<br><a href="${u}" target="_blank" rel="noopener noreferrer">${u}</a>`:''}</span></li>`).join('')}</ol></div>`).join('')}</div>
+  <div class="grid g3 mt">${Object.keys(TAGS).map(k=>`<div class="card rv"><div>${badge(k)}</div><p>${{doc:'Informação apoiada em documentos: leis, registros oficiais, gravuras datadas, atas.',int:'Leitura feita por pesquisadores a partir das fontes, que pode ser debatida.',oral:'Conhecimento transmitido pelos mestres e comunidades, valioso, mas não equivalente a prova documental.'}[k]}</p></div>`).join('')}</div>
+  <p class="note mt"><span>⟡</span><span><b>Créditos das imagens.</b> Todas as ilustrações são originais, criadas em SVG para o Raízes, e podem ser reutilizadas para fins educativos. Nenhuma fotografia de terceiros foi utilizada. Algumas edições de livros listados podem ter reedições com outros dados editoriais; confira o catálogo de bibliotecas antes de citar.</span></p>
+</div></section>
+${nextRoom('referencias')}`;
+
+/* ============ FOOTER / NAV ============ */
+function renderChrome(){
+  $('#nav').innerHTML=NAV_MAIN.map(r=>`<a href="#${r}" data-route="${r}">${NAV_SHORT[r]||ROUTES.find(x=>x[0]===r)[1]}</a>`).join('');
+  $('#drawerList').innerHTML=ROUTES.map(([r,l],i)=>`<li><a href="#${r}" data-route="${r}"><span>${String(i+1).padStart(2,'0')}</span>${l}</a></li>`).join('');
+  $('#footer').innerHTML=`<div class="wrap"><div class="foot-grid">
+   <div><a class="brand" href="#inicio"><span><b>RAÍZES</b><small>Museu Digital da Cultura Afro-Brasileira</small></span></a><p style="margin-top:18px;max-width:40ch">Um espaço dedicado à valorização, ao conhecimento e à preservação das manifestações culturais afro-brasileiras.</p></div>
+   <div><h4>Salas</h4><ul>${[['inicio','Início'],['capoeira','Capoeira'],['ijexa','Ijexá'],['maculele','Maculelê'],['historia','História'],['galeria','Galeria'],['referencias','Referências']].map(([r,l])=>`<li><a href="#${r}">${l}</a></li>`).join('')}</ul></div>
+   <div><h4>Explorar</h4><ul>${[['instrumentos','Instrumentos'],['linha-do-tempo','Linha do tempo'],['curiosidades','Quiz e glossário'],['comparacao','Comparação'],['preservacao','Preservação'],['sobre','Sobre o projeto']].map(([r,l])=>`<li><a href="#${r}">${l}</a></li>`).join('')}</ul></div>
+   <div><h4>Créditos e uso</h4><p>Ilustrações originais em SVG criadas para este projeto, de uso educativo livre. Fontes de pesquisa na sala de Referências. Conteúdo educativo, sem fins comerciais.</p></div>
+  </div>
+  <p class="foot-quote">"Conhecer nossas raízes é reconhecer a história que nos trouxe até aqui."</p>
+  <div class="foot-bottom"><span>Raízes — Museu Digital da Cultura Afro-Brasileira · 2026</span><span>Capoeira · Ijexá · Maculelê</span></div></div>`;
+}
+
+/* ============ ROUTER ============ */
+let current=null, pendingAnchor=null;
+function parseHash(){const h=decodeURIComponent(location.hash.replace(/^#\/?/,''));return P[h]?h:'inicio'}
+function go(route,anchor){
+  const main=$('#conteudo');const same=route===current;
+  if(same){if(anchor)scrollToId(anchor);return}
+  main.classList.add('leaving');
+  setTimeout(()=>{
+    main.innerHTML=P[route]();current=route;
+    document.title=(route==='inicio'?'Raízes Museu Digital':`${ROUTES.find(r=>r[0]===route)[1]} · Raízes`);
+    $$('[data-route]').forEach(a=>{if(a.dataset.route===route)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+    initPage(route);
+    if(anchor){requestAnimationFrame(()=>scrollToId(anchor,true))}else{window.scrollTo(0,0);main.focus({preventScroll:true})}
+    main.classList.remove('leaving');
+  },current===null?0:200);
+}
+function scrollToId(id,instant){const el=document.getElementById(id);if(el){el.scrollIntoView({behavior:instant||reduce()?'auto':'smooth',block:'start'})}}
+const reduce=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.addEventListener('hashchange',()=>{go(parseHash(),pendingAnchor);pendingAnchor=null});
+
+/* ============ PAGE INIT ============ */
+let io;
+function initPage(route){
+  if(io)io.disconnect();
+  const els=$$('.rv');
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -6% 0px',threshold:.05});
+    els.forEach(el=>io.observe(el));
+    // anything already on screen shows immediately
+    requestAnimationFrame(()=>els.forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)el.classList.add('in')}));
+  } else els.forEach(el=>el.classList.add('in'));
+  if(route==='curiosidades'){quizRender();glossRender('');exploreRender('capoeira')}
+  onScroll();
+}
+
+/* ============ SCROLL UI ============ */
+function onScroll(){
+  const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;
+  $('#top').classList.toggle('solid',y>40);
+  $('#progress').style.width=(h>0?y/h*100:0)+'%';
+  $('#toTop').classList.toggle('show',y>900);
+  // subnav active
+  const links=$$('.subnav a');if(links.length){let on=null;links.forEach(a=>{const s=document.getElementById(a.dataset.anchor);if(s&&s.getBoundingClientRect().top<200)on=a});links.forEach(a=>a.classList.toggle('on',a===on))}
+  // timeline fill
+  const tl=$('#tl');if(tl){const r=tl.getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight*.6-r.top)/r.height));$('#tlFill').style.height=(p*100)+'%'}
+}
+addEventListener('scroll',onScroll,{passive:true});
+
+/* ============ DRAWER ============ */
+const drawer=$('#drawer'),menuBtn=$('#menuBtn');
+function openDrawer(o){drawer.classList.toggle('open',o);drawer.setAttribute('aria-hidden',String(!o));menuBtn.setAttribute('aria-expanded',String(o));document.body.style.overflow=o?'hidden':'';if(o)setTimeout(()=>$('#drawer [aria-current="page"], #drawer a').focus(),50);else menuBtn.focus({preventScroll:true})}
+menuBtn.addEventListener('click',()=>openDrawer(true));
+
+/* ============ INSTRUMENT MODAL ============ */
+const idlg=$('#instrDlg');
+function openInstr(id){const i=INSTR[id];
+ idlg.innerHTML=`<button class="icon-btn dlg-close" data-close-dlg aria-label="Fechar ficha">✕</button><div class="dlg"><div class="pic">${INSTR_ART[id]()}</div><div class="txt"><p class="eyebrow">Ficha do instrumento</p><h2 id="instrTitle">${i.nome}</h2><div class="meta" style="display:flex;gap:6px;flex-wrap:wrap">${i.em.map(e=>`<span class="chip on">${e}</span>`).join('')}</div><dl>
+ <div><dt>Descrição física</dt><dd>${i.fis}</dd></div><div><dt>Materiais</dt><dd>${i.mat}</dd></div><div><dt>Como produz o som</dt><dd>${i.som}</dd></div><div><dt>Função musical</dt><dd>${i.fun}</dd></div><div><dt>Onde aparece</dt><dd>${i.em.join(', ')}</dd></div><div><dt>Importância cultural</dt><dd>${i.imp}</dd></div><div><dt>Curiosidade histórica</dt><dd>${i.cur}</dd></div></dl></div></div>`;
+ idlg.showModal();}
+
+/* ============ LIGHTBOX ============ */
+const lb=$('#lbDlg');let lbIdx=0,lbList=[];
+function openLb(i){lbList=$$('#gal figure').filter(f=>!f.hidden).map(f=>+f.querySelector('[data-gal]').dataset.gal);lbIdx=Math.max(0,lbList.indexOf(i));drawLb();if(!lb.open)lb.showModal()}
+function drawLb(){const g=GALLERY[lbList[lbIdx]];lb.innerHTML=`<button class="icon-btn dlg-close" data-close-dlg aria-label="Fechar galeria">✕</button><div class="lb-inner"><div class="lb-stage">${g.art()}<button class="lb-nav lb-prev" data-lb="-1" aria-label="Imagem anterior">‹</button><button class="lb-nav lb-next" data-lb="1" aria-label="Próxima imagem">›</button></div><div class="lb-cap"><span class="k">${g.cat} · ${lbIdx+1} de ${lbList.length}</span><h3>${g.t}</h3><p>${g.c}</p><small>Crédito: ilustração original, Raízes — Museu Digital (2026).</small></div></div>`}
+lb.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){lbIdx=(lbIdx+1)%lbList.length;drawLb()}if(e.key==='ArrowLeft'){lbIdx=(lbIdx-1+lbList.length)%lbList.length;drawLb()}});
+[idlg,lb].forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
+
+/* ============ QUIZ ============ */
+const Q={i:0,score:0,answered:false,picked:null};
+function quizRender(){const box=$('#quizBox');if(!box)return;
+ if(Q.i>=QUIZ.length){const pct=Math.round(Q.score/QUIZ.length*100);const msg=pct>=85?'Excelente! Você percorreu o museu com atenção.':pct>=60?'Muito bem! Algumas salas merecem uma nova visita.':'Que tal revisitar as salas e tentar de novo?';
+  box.innerHTML=`<div class="qtop"><span>Resultado final</span><span>${QUIZ.length} de ${QUIZ.length}</span></div><div class="qbar"><i style="width:100%"></i></div><p class="score-big">${Q.score}/${QUIZ.length}</p><p style="font-size:1.2rem;margin-top:10px">${pct}% de acertos. ${msg}</p><div class="qfoot"><button class="btn btn-gold" data-quiz="restart">Reiniciar quiz</button><a class="link-arrow" href="#capoeira">Revisitar as salas ${arrow}</a></div>`;return}
+ const [cat,q,opts,ans,exp]=QUIZ[Q.i];
+ box.innerHTML=`<div class="qtop"><span>${cat}</span><span>Pergunta ${Q.i+1} de ${QUIZ.length} · Pontos: ${Q.score}</span></div><div class="qbar" role="progressbar" aria-valuemin="0" aria-valuemax="${QUIZ.length}" aria-valuenow="${Q.i}" aria-label="Progresso do quiz"><i style="width:${Q.i/QUIZ.length*100}%"></i></div><h3 style="font-size:clamp(1.3rem,2.4vw,1.8rem)">${q}</h3><div class="qopts">${opts.map((o,k)=>{let cls='';if(Q.answered){if(k===ans)cls='right';else if(k===Q.picked)cls='wrong'}return `<button class="qopt ${cls}" data-quiz="opt" data-k="${k}" ${Q.answered?'disabled':''}><span class="l">${'ABCD'[k]}</span>${o}${Q.answered&&k===ans?'<span class="sr"> (resposta correta)</span>':''}</button>`}).join('')}</div>${Q.answered?`<div class="qexp"><b>${Q.picked===ans?'Correto!':'Não foi dessa vez.'}</b> ${exp}</div><div class="qfoot"><span class="muted" style="font-size:.85rem">Pontuação: ${Q.score}</span><button class="btn btn-gold" data-quiz="next">${Q.i+1<QUIZ.length?'Próxima pergunta':'Ver resultado'} ${arrow}</button></div>`:''}`;
+}
+
+/* ============ GLOSSARY ============ */
+function norm(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
+function glossRender(q){const list=$('#glossList');if(!list)return;const n=norm(q.trim());
+ const hits=GLOSS.filter(([t,d])=>!n||norm(t).includes(n)||norm(d).includes(n));
+ const hl=s=>{if(!n)return esc(s);const ns=norm(s);const i=ns.indexOf(n);if(i<0)return esc(s);return esc(s.slice(0,i))+'<mark>'+esc(s.slice(i,i+n.length))+'</mark>'+esc(s.slice(i+n.length))};
+ list.innerHTML=hits.length?hits.map(([t,d])=>`<div><dt>${hl(t)}</dt><dd>${hl(d)}</dd></div>`).join(''):`<div><dt>Nenhum termo encontrado</dt><dd>Tente outra palavra, como "roda", "ritmo" ou "mestre".</dd></div>`;
+ $('#glossCount').textContent=n?`${hits.length} ${hits.length===1?'termo encontrado':'termos encontrados'}`:`${GLOSS.length} termos`;
+}
+
+/* ============ EXPLORE ============ */
+function exploreRender(k){const e=EXPLORE[k],p=$('#panel-explore');if(!p)return;
+ $$('[data-explore]').forEach(b=>{const on=b.dataset.explore===k;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1});p.setAttribute('aria-labelledby','tab-'+k);
+ p.innerHTML=`<div class="ex-facets">${[['História',e.h],['Instrumentos',e.i],['Movimentos',e.m],['Características',e.c],['Importância cultural',e.p]].map(([t,d])=>`<div class="card"><span class="k">${t}</span><p style="color:var(--dk-ink)">${d}</p></div>`).join('')}</div><a class="btn btn-gold" style="margin-top:28px" href="#${e.link}">Entrar na sala ${arrow}</a>`}
+
+/* ============ EVENTS ============ */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('a,button,[data-close-drawer]');if(!t)return;
+  if(t.matches('[data-close-drawer]')){openDrawer(false);return}
+  if(t.matches('[data-close-dlg]')){t.closest('dialog').close();return}
+  if(t.classList.contains('skip')){e.preventDefault();$('#conteudo').focus();return}
+  if(t.tagName==='A'&&t.getAttribute('href')?.startsWith('#')){
+    const route=t.getAttribute('href').slice(1);const anchor=t.dataset.anchor;
+    if(drawer.classList.contains('open'))openDrawer(false);
+    if(P[route]){e.preventDefault();
+      if(location.hash.slice(1)===route||(route==='inicio'&&!location.hash)){go(route,anchor);if(!anchor)window.scrollTo({top:0,behavior:reduce()?'auto':'smooth'})}
+      else{pendingAnchor=anchor||null;location.hash=route}}
+    return}
+  if(t.dataset.instr){openInstr(t.dataset.instr);return}
+  if(t.dataset.gal){openLb(+t.dataset.gal);return}
+  if(t.dataset.lb){lbIdx=(lbIdx+ +t.dataset.lb+lbList.length)%lbList.length;drawLb();return}
+  if(t.dataset.quiz==='opt'&&!Q.answered){Q.picked=+t.dataset.k;Q.answered=true;if(Q.picked===QUIZ[Q.i][3])Q.score++;quizRender();$('#quizBox .qexp')?.scrollIntoView({block:'nearest'});$('#quizBox [data-quiz="next"]')?.focus({preventScroll:true});return}
+  if(t.dataset.quiz==='next'){Q.i++;Q.answered=false;Q.picked=null;quizRender();$('#quizBox .qopt')?.focus({preventScroll:true});return}
+  if(t.dataset.quiz==='restart'){Q.i=0;Q.score=0;Q.answered=false;Q.picked=null;quizRender();return}
+  if(t.dataset.explore){exploreRender(t.dataset.explore);return}
+  if(t.dataset.gfilter){const c=t.dataset.gfilter;$$('[data-gfilter]').forEach(b=>b.setAttribute('aria-pressed',b===t));$$('#gal figure').forEach(f=>{f.hidden=!(c==='Todas'||f.dataset.cat===c);if(!f.hidden)f.classList.add('in')});return}
+  if(t.dataset.ifilter){const c=t.dataset.ifilter;$$('[data-ifilter]').forEach(b=>b.setAttribute('aria-pressed',b===t));$$('.igroup').forEach(g=>{g.hidden=!(c==='Todas'||g.dataset.group===c);if(!g.hidden)$$('.rv',g).forEach(x=>x.classList.add('in'))});return}
+  if(t.dataset.tfilter){const c=t.dataset.tfilter;$$('[data-tfilter]').forEach(b=>b.setAttribute('aria-pressed',b===t));$$('.tl-item').forEach(it=>{it.hidden=!(c==='todos'||it.dataset.cat===c);if(!it.hidden)it.classList.add('in')});onScroll();return}
+});
+document.addEventListener('input',e=>{if(e.target.id==='glossQ')glossRender(e.target.value)});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&drawer.classList.contains('open'))openDrawer(false);
+  const tab=e.target.closest&&e.target.closest('[role="tab"]');
+  if(tab&&(e.key==='ArrowRight'||e.key==='ArrowLeft')){const tabs=$$('[role="tab"]');let i=tabs.indexOf(tab)+(e.key==='ArrowRight'?1:-1);i=(i+tabs.length)%tabs.length;tabs[i].focus();exploreRender(tabs[i].dataset.explore)}
+});
+$('#toTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduce()?'auto':'smooth'}));
+
+renderChrome();
+go(parseHash());
+})();
+</script>
